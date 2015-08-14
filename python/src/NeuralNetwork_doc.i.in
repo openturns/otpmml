@@ -1,0 +1,30 @@
+%define OTPMML_NeuralNetwork_doc
+"
+The class enables to build a neural network model from a PMML file.
+
+Usage
+------
+    model = NeuralNetwork('myNNModel.pmml')
+
+Parameters
+----------
+filename : string
+    PMML file that contains the neural network model
+
+Examples
+--------
+>>> import openturns as ot
+>>> import otpmml
+>>> # load model
+>>> model = otpmml.NeuralNetwork('myNNModel.pmml')
+
+Notes
+------
+The result object is of type NumericalMathFunction.
+"
+
+%enddef
+
+%feature("docstring") OTPMML::NeuralNetwork
+OTPMML_NeuralNetwork_doc
+

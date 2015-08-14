@@ -1,0 +1,66 @@
+%define OTPMML_RegressionModel_doc
+"The class enables to build a regression model from a PMML file.
+
+Usage
+------
+    model = RegressionModel(filename)
+    model = RegressionModel(myLinearLeastSquares)
+
+Parameters
+----------
+filename : string
+    PMML file that contains the regression model
+
+myLinearLeastSquares: LinearLeastSquares
+    Countains the algorithm for solving linear least squares.
+
+Examples
+--------
+import openturns as ot
+import otpmml
+model = otpmml.RegressionModel('myRModel.pmml')"
+
+%enddef
+
+%feature("docstring") OTPMML::RegressionModel
+OTPMML_RegressionModel_doc
+// ---------------------------------------------------------------------
+%define OTPMML_RegressionModel_get_lls_doc
+"The method returns the LinearLeastSquares arguments
+
+Returns
+-------
+model : LinearLeastSquares
+    Openturns class for linear regression model
+
+Examples
+--------
+>>> import openturns as ot
+>>> import otpmml
+>>> model = otpmml.RegressionModel('myRModel.pmml')
+>>> linearModel = model.getLinearLeastSquares()"
+%enddef
+
+%feature("docstring") OTPMML::RegressionModel::getLinearLeastSquares
+OTPMML_RegressionModel_get_lls_doc
+
+// ---------------------------------------------------------------------
+%define OTPMML_RegressionModel_export_pmml_doc
+"The method exports the model into a PMML file
+
+Parameters
+-----------
+filename : string
+    PMML File for export.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import otpmml
+>>> model = otpmml.RegressionModel('myRModel.pmml')
+>>> model.exportToPMMLFile('myModel.pmml')
+"
+%enddef
+
+%feature("docstring") OTPMML::RegressionModel::exportToPMMLFile
+OTPMML_RegressionModel_export_pmml_doc

@@ -1,0 +1,8 @@
+Number of regression models = 1
+Number of neural networks = 0
+Coefficients =     [ age    salary ]
+0 : [ 7.1    0.01   ]
+Linear regression:
+   constant = [132.37]
+   linear = [[ 7.1  ]
+ [ 0.01 ]]

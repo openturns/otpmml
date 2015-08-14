@@ -1,0 +1,127 @@
+% 
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.2
+% or any later version published by the Free Software Foundation;
+% with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+% Texts.  A copy of the license is included in the section entitled "GNU
+% Free Documentation License".
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{User Manual}
+
+This section gives an exhaustive presentation of the objects and functions provided by the \textit{otpmml} module, in the alphabetic order.
+
+
+\subsection{DAT}
+
+This class is used through its static methods in order to import\slash export a \textit{NumericalSample} or a collection of \textit{NumericalSample} into a \texttt{.dat} file.
+
+\begin{description}
+
+\item[Methods:]  \rule{0pt}{1em}
+
+\begin{description}
+\item \textit{Import}
+\begin{description}
+\item[Usage:] \rule{0pt}{1em}
+\begin{description}
+\item  \textit{DAT.Import(filename)}
+\end{description}
+\item[Arguments:] \rule{0pt}{1em}
+\begin{description}
+\item \textit{filename}: a string, file that contains data
+\end{description}
+\item[Value:]  a collection of samples of size 2. First sample corresponds to input data, second one to output data.
+\end{description}
+\end{description}
+\bigskip
+
+\begin{description}
+\item \textit{Export}
+\begin{description}
+\item[Usage:] \rule{0pt}{1em}
+\begin{description}
+\item  \textit{DAT.Export(filename, input, output)}
+\item  \textit{DAT.Export(filename, inputOutput)}
+\end{description}
+\item[Arguments:] \rule{0pt}{1em}
+\begin{description}
+\item \textit{filename}: a string, file where to export data.
+\item \textit{input}: a \textit{NumericalSample}, input sample, usually of dimension $\geq 1$.
+\item \textit{output}: a \textit{NumericalSample}, output sample, usually of dimension $1$.
+\item \textit{inputOutput}: a \textit{NumericalSample}, usually of dimension $\geq 1$.
+\end{description}
+\item[Value:]  None.
+\end{description}
+\end{description}
+\bigskip
+\end{description}
+
+\subsection{NeuralNetwork}
+
+The class inherits from the \textit{NumericalMathFunction} class.
+
+\begin{description}
+
+\item[Usage:] \rule{0pt}{1em}
+  \begin{description}
+  \item \textit{NeuralNetwork(pmmlFile)}
+  \end{description}
+
+\item[Arguments:]  \rule{0pt}{1em}
+  \begin{description}
+  \item \textit{pmmlFile}: a string, PMML file that countains the neural network
+  \end{description}
+
+\item[Value:] a NeuralNetwork, a \textit{NumericalMathFunction} that implements neural network
+
+\item[Details:]  \rule{0pt}{1em}
+  \begin{description}
+  \item NeuralNetwork constructor
+  \end{description}
+
+\item[Links] \rule{0pt}{1em}
+\end{description}
+
+\subsection{RegressionModel}
+
+\begin{description}
+
+\item[Usage:] \rule{0pt}{1em}
+  \begin{description}
+  \item \textit{RegressionModel(pmmlFile)}
+  \item \textit{RegressionModel(linearLeastSquares)}
+  \end{description}
+
+\item[Arguments:]  \rule{0pt}{1em}
+  \begin{description}
+  \item \textit{pmmlFile}: a string, PMML file that countains the regression model
+  \item \textit{linearLeastSquares}: a LinearLeastSquare, object encapsulating least squares.
+  \end{description}
+
+\item[Value:] a RegressionModel
+
+\item[Details:]  \rule{0pt}{1em}
+  \begin{description}
+  \item With the first usage, the class loads a model implemented in \texttt{PMML} format
+  \item With the second usage, the class encapsulates a LinearLeastSquares attribut
+  \end{description}
+
+\item \textit{getLinearLeastSquare}
+    \begin{description}
+    \item[Usage:] \textit{getLinearLeastSquare()}
+    \item[Arguments:] no argument
+    \item[Value:] a \textit{LinearLeastSquare}
+    \end{description}
+    \bigskip
+    
+\item \textit{exportToPMMLFile}
+    \begin{description}
+    \item[Usage:] \textit{exportToPMMLFile(filename)}
+    \item[Arguments:] \textit{filename}, a string. Name of file for the export of regression model.
+    \item[Value:] none.
+    \end{description}
+    \bigskip
+
+% \item[Links] \rule{0pt}{1em}
+\end{description}

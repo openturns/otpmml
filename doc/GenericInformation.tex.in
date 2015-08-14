@@ -1,0 +1,9 @@
+%\Large{\strut\\[2em]\bf OpenTURNS }\\
+\small{\strut\\[2em]\bf Documentation built from package @PACKAGE_NAME@-@PACKAGE_VERSION@}\\
+\vspace*{1cm}
+
+
+{\bf \Large \today }\\[2cm]
+
+\includegraphics[height=10cm]{logoOTPMML.png}\\
+{\small Image of an artificial neural network, copied from URANIE documentation}

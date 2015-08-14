@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<PMML version="3.0" xmlns="http://www.dmg.org/PMML-3_0">
+  <Header copyright="texte copyright" description="texte description">
+    <Application name="Uranie" version="3.0/1"/>
+    <Annotation>date Thu May 03, 2012</Annotation>
+  </Header>
+  <DataDictionary>
+    <DataField name="E" displayName="E" optype="continuous" dataType="float"/>
+    <DataField name="F" displayName="F" optype="continuous" dataType="float"/>
+    <DataField name="L" displayName="L" optype="continuous" dataType="float"/>
+    <DataField name="I" displayName="I" optype="continuous" dataType="float"/>
+    <DataField name="y" displayName="y" optype="continuous" dataType="float"/>
+  </DataDictionary>
+  <NeuralNetwork modelName="ANNPoutre" functionName="regression" numberOfLayers="2">
+    <MiningSchema>
+      <MiningField name="E" usageType="active"/>
+      <MiningField name="F" usageType="active"/>
+      <MiningField name="L" usageType="active"/>
+      <MiningField name="I" usageType="active"/>
+      <MiningField name="y" usageType="predicted"/>
+    </MiningSchema>
+    <NeuralInputs numberOfInputs="4">
+      <NeuralInput id="0">
+        <DerivedField optype="continuous" dataType="float">
+          <NormContinuous field="E">
+            <LinearNorm orig="0" norm="-1.310570e-01"/>
+            <LinearNorm orig="3.381252e+07" norm="0"/>
+          </NormContinuous>
+        </DerivedField>
+      </NeuralInput>
+      <NeuralInput id="1">
+        <DerivedField optype="continuous" dataType="float">
+          <NormContinuous field="F">
+            <LinearNorm orig="0" norm="-2.999734e-01"/>
+            <LinearNorm orig="3.000012e+04" norm="0"/>
+          </NormContinuous>
+        </DerivedField>
+      </NeuralInput>
+      <NeuralInput id="2">
+        <DerivedField optype="continuous" dataType="float">
+          <NormContinuous field="L">
+            <LinearNorm orig="0" norm="-1.132115e-02"/>
+            <LinearNorm orig="2.550000e+02" norm="0"/>
+          </NormContinuous>
+        </DerivedField>
+      </NeuralInput>
+      <NeuralInput id="3">
+        <DerivedField optype="continuous" dataType="float">
+          <NormContinuous field="I">
+            <LinearNorm orig="0" norm="-7.625702e-02"/>
+            <LinearNorm orig="3.975001e+02" norm="0"/>
+          </NormContinuous>
+        </DerivedField>
+      </NeuralInput>
+    </NeuralInputs>
+    <NeuralLayer activationFunction="logistic" numberOfNeurons="10">
+      <Neuron id="4" bias="2.996440e-01">
+        <Con from="0" weight="7.149566e-01"/>
+        <Con from="1" weight="-8.512941e-01"/>
+        <Con from="2" weight="-1.714968e-01"/>
+        <Con from="3" weight="-5.311813e-01"/>
+      </Neuron>
+      <Neuron id="5" bias="-8.406316e-01">
+        <Con from="0" weight="-3.425032e-02"/>
+        <Con from="1" weight="-1.626658e-01"/>
+        <Con from="2" weight="-1.607069e-02"/>
+        <Con from="3" weight="-5.896790e-02"/>
+      </Neuron>
+      <Neuron id="6" bias="2.061586e+00">
+        <Con from="0" weight="3.593400e-01"/>
+        <Con from="1" weight="2.687412e-01"/>
+        <Con from="2" weight="-1.899627e-01"/>
+        <Con from="3" weight="2.344808e-01"/>
+      </Neuron>
+      <Neuron id="7" bias="-5.099752e-01">
+        <Con from="0" weight="2.951247e-01"/>
+        <Con from="1" weight="1.204576e+00"/>
+        <Con from="2" weight="1.297726e+00"/>
+        <Con from="3" weight="8.947821e-01"/>
+      </Neuron>
+      <Neuron id="8" bias="6.240121e-01">
+        <Con from="0" weight="8.701723e-01"/>
+        <Con from="1" weight="-1.587754e+00"/>
+        <Con from="2" weight="-6.821903e-01"/>
+        <Con from="3" weight="-6.888501e-01"/>
+      </Neuron>
+      <Neuron id="9" bias="-2.123049e+00">
+        <Con from="0" weight="-2.776147e-01"/>
+        <Con from="1" weight="1.845533e-01"/>
+        <Con from="2" weight="7.126242e-02"/>
+        <Con from="3" weight="-1.360066e-01"/>
+      </Neuron>
+      <Neuron id="10" bias="-1.001045e+00">
+        <Con from="0" weight="-7.619950e-02"/>
+        <Con from="1" weight="2.498360e-01"/>
+        <Con from="2" weight="3.211165e-01"/>
+        <Con from="3" weight="-2.855516e-01"/>
+      </Neuron>
+      <Neuron id="11" bias="-3.547552e-01">
+        <Con from="0" weight="-8.335148e-02"/>
+        <Con from="1" weight="-6.634401e-02"/>
+        <Con from="2" weight="-1.301238e-01"/>
+        <Con from="3" weight="-4.319297e-01"/>
+      </Neuron>
+      <Neuron id="12" bias="1.080441e+00">
+        <Con from="0" weight="-1.236344e-01"/>
+        <Con from="1" weight="-1.362846e+00"/>
+        <Con from="2" weight="1.383973e-01"/>
+        <Con from="3" weight="8.373815e-01"/>
+      </Neuron>
+      <Neuron id="13" bias="-4.734329e-01">
+        <Con from="0" weight="2.917833e-01"/>
+        <Con from="1" weight="-9.650397e-01"/>
+        <Con from="2" weight="5.793777e-01"/>
+        <Con from="3" weight="5.883896e-01"/>
+      </Neuron>
+    </NeuralLayer>
+    <NeuralLayer activationFunction="identity" numberOfNeurons="1">
+      <Neuron id="14" bias="-1.730285e+00">
+        <Con from="4" weight="-5.171105e-01"/>
+        <Con from="5" weight="-1.043183e+01"/>
+        <Con from="6" weight="2.750707e+00"/>
+        <Con from="7" weight="5.982801e-02"/>
+        <Con from="8" weight="1.480522e-01"/>
+        <Con from="9" weight="1.718803e+01"/>
+        <Con from="10" weight="7.790601e-01"/>
+        <Con from="11" weight="1.617896e+00"/>
+        <Con from="12" weight="-1.567221e-01"/>
+        <Con from="13" weight="-1.111080e-01"/>
+      </Neuron>
+    </NeuralLayer>
+    <NeuralOutputs numberOfOutputs="1">
+      <NeuralOutput outputNeuron="14">
+        <DerivedField optype="continuous" dataType="float">
+          <NormContinuous field="y">
+            <LinearNorm orig="0" norm="-3.434914e-01"/>
+            <LinearNorm orig="1.262673e+01" norm="0"/>
+          </NormContinuous>
+        </DerivedField>
+      </NeuralOutput>
+    </NeuralOutputs>
+  </NeuralNetwork>
+</PMML>

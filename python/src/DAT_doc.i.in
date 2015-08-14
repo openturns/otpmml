@@ -1,0 +1,59 @@
+%define OTPMML_DAT_import
+"Import data from `dat` file
+
+Parameters
+----------
+filename: string
+    file that contains data
+
+Returns
+-------
+coll : collection
+    Collection of NumericalSample, of size 2
+    Usually first sample corresponds to input data, second one to output
+
+Examples
+--------
+>>> import openturns as ot
+>>> import otpmml
+>>> # import collection
+>>> coll = DAT.Import('myData.dat')
+>>> # Get first and second samples
+>>> inputSample, outputSample = tuple(coll)"
+%enddef
+
+%feature("docstring") OTPMML::DAT::Import
+OTPMML_DAT_import
+//------------------------------------------------
+%define OTPMML_DAT_export
+"Export data to `dat` file
+
+Usage
+-----
+  DAT.Export(filename, inputSample, outputSample)
+  DAT.Export(filename, inputSample)
+
+Parameters
+----------
+filename: string
+    file that contains data
+
+inputSample: :class:`~openturns.NumericalSample` or 2d-array like
+    Corresponds to input data
+
+outputSample: :class:`~openturns.NumericalSample` or 2d-array like
+    Corresponds to output data
+
+Examples
+--------
+>>> import openturns as ot
+>>> import otpmml
+>>> # Generate samples
+>>> inputSample = ot.Normal(2).getSample(10)
+>>> outputSample = ot.NumericalMathFunction(['x',y'], ['x+y'])(inputSample)
+>>> DAT.Export('myData.dat', inputSample, outputSample)"
+%enddef
+
+%feature("docstring") OTPMML::DAT::Export
+OTPMML_DAT_export
+//------------------------------------------------

@@ -1,0 +1,45 @@
+Number of regression models = 0
+Number of neural networks = 0
+Number of neural inputs = 4
+Number of neural outputs = 1
+Number of layers = 2
+Size of layer 0 = 10
+Size of layer 1 = 1
+Size of layer 4 = 0
+Name of neural input 2 = 
+Neuron ids of layer 0 = [4,5,6,7,8,9,10,11,12,13]#10
+Neuron ids of layer 1 = [14]
+Neuron ids of layer 2 = []
+Bias of layer 0 = [0.299644,-0.840632,2.06159,-0.509975,0.624012,-2.12305,-1.00104,-0.354755,1.08044,-0.473433]#10
+Bias of layer 1 = [-1.73029]
+Bias of layer 2 = []
+Weights of layer 0 = 4x10
+[[  0.714957  -0.0342503  0.35934    0.295125   0.870172  -0.277615  -0.0761995 -0.0833515 -0.123634   0.291783  ]
+ [ -0.851294  -0.162666   0.268741   1.20458   -1.58775    0.184553   0.249836  -0.066344  -1.36285   -0.96504   ]
+ [ -0.171497  -0.0160707 -0.189963   1.29773   -0.68219    0.0712624  0.321117  -0.130124   0.138397   0.579378  ]
+ [ -0.531181  -0.0589679  0.234481   0.894782  -0.68885   -0.136007  -0.285552  -0.43193    0.837382   0.58839   ]]
+Weights of layer 1 = 10x1
+[[  -0.517111 ]
+ [ -10.4318   ]
+ [   2.75071  ]
+ [   0.059828 ]
+ [   0.148052 ]
+ [  17.188    ]
+ [   0.77906  ]
+ [   1.6179   ]
+ [  -0.156722 ]
+ [  -0.111108 ]]
+Weights of layer 2 = []
+Inputs normalization =     [ orig0           orig1           norm0           norm1           ]
+0 : [     0               3.38125e+07    -0.131057        0           ]
+1 : [     0           30000.1            -0.299973        0           ]
+2 : [     0             255              -0.0113212       0           ]
+3 : [     0             397.5            -0.076257        0           ]
+Outputs normalization =     [ orig0     orig1     norm0     norm1     ]
+0 : [  0        12.6267   -0.343491  0        ]
+Evaluation function at layer 2 = class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoNumericalMathEvaluationImplementation name=Unnamed gradientImplementation=class=NoNumericalMathGradientImplementation name=Unnamed hessianImplementation=class=NoNumericalMathHessianImplementation name=Unnamed
+reseau=[3.04802,44299,255.065,371.117]
+normInput=[-7.63027,1.5889,0.0224802,-0.870379]
+x0=[0.00235276,0.312859,0.386599,0.168326,0.000351066,0.600714,0.558012,0.633867,0.295807,0.00872965]#10
+x1=[7.81637]
+y=[46.5277]

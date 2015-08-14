@@ -1,0 +1,121 @@
+% 
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.2
+% or any later version published by the Free Software Foundation;
+% with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+% Texts.  A copy of the license is included in the section entitled "GNU
+% Free Documentation License".
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{Use Cases Guide}
+
+This section presents the main functionalities of the module \textit{otpmml} in their context.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{NeuralNetwork import}
+
+Class \texttt{NeuralNetwork} imports a neural network model from a \texttt{PMML} file. 
+
+
+Python script for this use case :
+
+\begin{lstlisting}
+import openturns as ot
+from otpmml import NeuralNetwork
+
+# Import the neural network
+neural_network = NeuralNetwork("myPMMLFile.pmml")
+print (neural_network)
+
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RegressionModel import}
+
+Class \texttt{RegressionModel} imports a regression model from a \texttt{PMML} file.
+
+
+Python script for this use case :
+
+\begin{lstlisting}
+import openturns as ot
+from otpmml import RegressionModel
+
+# Import the model
+model = RegressionModel("myPMMLFile.pmml")
+print (model)
+
+# LinearLeastSquares accessor
+linearLeastSquares = model.getLinearLeastSquares()
+
+# Export model to Pmml file
+model.exportToPMMLFile("linearModel.pmml")
+
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Import and export of DAT files}
+
+Class \texttt{IO} exports both input\slash output samples into a \texttt{DAT} file
+
+
+Python script for this use case :
+
+\begin{lstlisting}
+import openturns as ot
+import otpmml.DAT as DAT
+from math import pi, sin
+
+a = 7.0
+b = 0.1
+# Create the Ishigami function
+input_variables = ["xi1","xi2","xi3"]
+formula = ["sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"]
+model = ot.NumericalMathFunction(input_variables, formula)
+model.setName("Ishigami")
+# Generating
+dist = ot.ComposedDistribution(3 *[ot.Uniform(-pi,pi)])
+X = dist.getSample(100)
+Y = model(X)
+# Export to DAT file
+DAT.Export("data.dat",X, Y)
+
+# Import DAT file
+sampleCollection = DAT.Import("data.dat")
+input_sample = sampleCollection[0]
+output_sample = sampleCollection[1]
+\end{lstlisting}
+
+Export could be done also using only one sample.
+
+
+Python script for this use case :
+
+\begin{lstlisting}
+import openturns as ot
+import otpmml.DAT as DAT
+from math import pi, sin
+
+a = 7.0
+b = 0.1
+# Create the Ishigami function
+input_variables = ["xi1","xi2","xi3"]
+formula = ["sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"]
+model = ot.NumericalMathFunction(input_variables, formula)
+model.setName("Ishigami")
+# Generating
+dist = ot.ComposedDistribution(3 *[ot.Uniform(-pi,pi)])
+X = dist.getSample(100)
+Y = model(X)
+# Encapsulating both samples
+Z = ot.NumericalSample(X)
+Z.stack(Y)
+# Export to DAT file
+DAT.Export("data.dat",Y)
+\end{lstlisting}

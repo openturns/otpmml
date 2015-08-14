@@ -1,0 +1,40 @@
+#                                               -*- cmake -*-
+#
+#  OTPMMLConfig.cmake(.in)
+#
+#  Find OTPMML includes and libraries
+#
+#  Copyright (C) 2005-2014 Phimeca
+#
+
+# Use the following variables to compile and link against OTPMML:
+#  OTPMML_FOUND          - True if OTPMML was found on your system
+#  OTPMML_USE_FILE       - The file making OTPMML usable
+#  OTPMML_DEFINITIONS    - Definitions needed to build with OTPMML
+#  OTPMML_INCLUDE_DIRS   - List of directories where OTPMML' header file are
+#  OTPMML_LIBRARY        - Library name
+#  OTPMML_LIBRARIES      - List of libraries to link against
+#  OTPMML_LIBRARY_DIRS   - List of directories containing OTPMML' libraries
+#  OTPMML_ROOT_DIR       - The base directory of OTPMML
+#  OTPMML_VERSION_STRING - A human-readable string containing the version
+#  OTPMML_VERSION_MAJOR  - The major version of OTPMML
+#  OTPMML_VERSION_MINOR  - The minor version of OTPMML
+#  OTPMML_VERSION_PATCH  - The patch version of OTPMML
+
+set ( OTPMML_FOUND 1 )
+set ( OTPMML_USE_FILE     "@OTPMML_USE_FILE@" )
+
+set ( OTPMML_DEFINITIONS  "@OTPMML_DEFINITIONS@" )
+set ( OTPMML_INCLUDE_DIR  "@OTPMML_INCLUDE_DIR@" )
+set ( OTPMML_INCLUDE_DIRS "@OTPMML_INCLUDE_DIRS@" )
+set ( OTPMML_LIBRARY      "@OTPMML_LIBRARY@" )
+set ( OTPMML_LIBRARIES    "@OTPMML_LIBRARIES@" )
+set ( OTPMML_LIBRARY_DIRS "@OTPMML_LIBRARY_DIRS@" )
+set ( OTPMML_ROOT_DIR     "@OTPMML_ROOT_DIR@" )
+
+set ( OTPMML_VERSION_STRING "@OTPMML_VERSION_STRING@" )
+set ( OTPMML_VERSION_MAJOR  "@OTPMML_VERSION_MAJOR@" )
+set ( OTPMML_VERSION_MINOR  "@OTPMML_VERSION_MINOR@" )
+set ( OTPMML_VERSION_PATCH  "@OTPMML_VERSION_PATCH@" )
+
+set (OTPMML_PYTHON@PYTHON_VERSION_MAJOR@_MODULE_PATH "@OTPMML_PYTHON_MODULE_PATH@")
