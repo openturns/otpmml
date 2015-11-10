@@ -74,13 +74,14 @@ if ( BUILD_PYTHON )
 endif ()
 
 
-# WARNING: This is where variables without OPENTURNS_ prefix are defined !
-foreach ( _var PYTHON_MODULE_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH)
-  if ( NOT IS_ABSOLUTE OTPMML_${_var} )
-    set ( OTPMML_${_var} ${CMAKE_INSTALL_PREFIX}/${OTPMML_${_var}} )
+# WARNING: This is where variables without OTPMML_ prefix are defined !
+foreach (_var PYTHON_MODULE_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH)
+  file (TO_NATIVE_PATH "${OTPMML_${_var}}" NATIVE_OTPMML_${_var})
+  if (NOT IS_ABSOLUTE ${NATIVE_OTPMML_${_var}})
+    file (TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OTPMML_${_var}} NATIVE_OTPMML_${_var})
   endif ()
-  set ( ${_var} ${OTPMML_${_var}} )
-endforeach ( _var )
+  string (REPLACE "\\" "\\\\" ${_var} ${NATIVE_OTPMML_${_var}})
+endforeach ()
 
 if (CMAKE_INSTALL_PREFIX MATCHES "^/usr")
   set (SYSTEM_INSTALL ON)
