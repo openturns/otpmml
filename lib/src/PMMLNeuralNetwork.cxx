@@ -1,6 +1,5 @@
 //                                               -*- C++ -*-
 /**
- *  @file  PMMLNeuralNetwork.cxx
  *  @brief Internal class to manage a <NeuralNetwork> element within a PMML document
  *
  *  Copyright (C) 2014 EDF
@@ -23,8 +22,8 @@
 #include "PMMLNeuralNetwork.hxx"
 #include "PMMLDoc.hxx"
 
-#include <Log.hxx>
-#include <Exception.hxx>
+#include <openturns/Log.hxx>
+#include <openturns/Exception.hxx>
 
 #include <libxml/parser.h>
 #include <libxml/xpath.h>

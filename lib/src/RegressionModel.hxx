@@ -23,8 +23,7 @@
 #ifndef OTPMML_REGRESSIONMODEL_HXX
 #define OTPMML_REGRESSIONMODEL_HXX
 
-#include <LinearLeastSquares.hxx>
-#include <Pointer.hxx>
+#include <openturns/LinearLeastSquares.hxx>
 
 #include "OTPMMLprivate.hxx"
 

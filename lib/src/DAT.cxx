@@ -24,11 +24,10 @@
 #include "PMMLDoc.hxx"
 #include "PMMLNeuralNetwork.hxx"
 
-#include <Log.hxx>
-#include <Exception.hxx>
-#include <NumericalSample.hxx>
-#include <Collection.hxx>
-#include <Os.hxx>
+#include <openturns/Log.hxx>
+#include <openturns/Exception.hxx>
+#include <openturns/NumericalSample.hxx>
+#include <openturns/Os.hxx>
 
 #include <libxml/parser.h>
 

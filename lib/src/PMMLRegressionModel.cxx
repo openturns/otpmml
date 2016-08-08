@@ -1,6 +1,5 @@
 //                                               -*- C++ -*-
 /**
- *  @file  PMMLRegressionModel.cxx
  *  @brief Internal class to manage a <RegressionModel> element within a PMML document
  *
  *  Copyright (C) 2014 EDF
@@ -23,7 +22,7 @@
 #include "PMMLRegressionModel.hxx"
 #include "PMMLDoc.hxx"
 
-#include <Exception.hxx>
+#include <openturns/Exception.hxx>
 
 #include <libxml/parser.h>
 #include <libxml/xpath.h>

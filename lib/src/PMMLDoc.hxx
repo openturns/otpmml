@@ -27,8 +27,7 @@
 #include "PMMLNeuralNetwork.hxx"
 #include "PMMLRegressionModel.hxx"
 
-#include <LinearLeastSquares.hxx>
-#include <Collection.hxx>
+#include <openturns/LinearLeastSquares.hxx>
 
 #include <libxml/tree.h>
 #include <libxml/xpathInternals.h>

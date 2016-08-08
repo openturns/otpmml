@@ -1,6 +1,5 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NeuralNetwork.hxx
  *  @brief The class NeuralNetwork creates a NumericalMathFunction from a neural network read in a PMML file
  *
  *  Copyright (C) 2014 EDF
@@ -23,7 +22,7 @@
 #ifndef OTPMML_NEURALNETWORK_HXX
 #define OTPMML_NEURALNETWORK_HXX
 
-#include <NumericalMathFunction.hxx>
+#include <openturns/NumericalMathFunction.hxx>
 
 #include "OTPMMLprivate.hxx"
 
