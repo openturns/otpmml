@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           otpmml
-Version:        1.2
+Version:        1.3
 Release:        0%{?dist}
 Summary:        OpenTURNS module
 Group:          System Environment/Libraries
