@@ -2,7 +2,7 @@
 #include <cmath>
 
 // OT includes
-#include <OT.hxx>
+#include <openturns/OT.hxx>
 
 #include "DAT.hxx"
 

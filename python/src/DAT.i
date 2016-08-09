@@ -1,10 +1,10 @@
 // SWIG file
 
 %{
-#include "PythonWrappingFunctions.hxx"
+#include <openturns/PythonWrappingFunctions.hxx>
 #include "DAT.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalSample.hxx"
+#include <openturns/PersistentCollection.hxx>
+#include <openturns/NumericalSample.hxx>
 %}
 
 %include DAT_doc.i

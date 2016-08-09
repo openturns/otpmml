@@ -25,7 +25,7 @@ OT_CONFIG_CMD = $(OT_PREFIX)/bin/openturns-config
 
 OT_VERSION ?= $(shell $(OT_CONFIG_CMD) --version)
 
-WINDEPS ?= $(OT_PREFIX)/../../distro/windows/openturns-developers-windeps-$(OT_VERSION)
+WINDEPS ?= $(OT_PREFIX)/../../distro/windows/openturns-developers-windeps
 
 # Module paths
 MOD_SRC    ?= $(PWD)/../..
@@ -101,7 +101,6 @@ mod-config: mod-check-compiler
 
 mod-compile: mod-config
 	cd $(MOD_BUILD) && make -j$(JOBS)
-	-beep
 	touch mod-compile
 
 mod-install: mod-compile
@@ -111,7 +110,6 @@ ifeq ($(DEBUG_OT),n)
 	$(TARGET)-strip -g $(MOD_PREFIX)/lib/*.a
 	$(TARGET)-strip --strip-unneeded $(MOD_PREFIX)/Lib/site-packages/*/*.pyd
 endif
-	-beep -r 2
 	touch mod-install
 
 mod-test: mod-install
@@ -139,7 +137,6 @@ mod-check-installer: mod-test
 mod-installer: mod-check-installer
 	makensis -DMODULE_PREFIX=$(MOD_PREFIX) -DMODULE_VERSION=$(MODULE_VERSION) -DOPENTURNS_VERSION=$(OT_VERSION) -DPYBASEVER=$(PYBASEVER) -DPYBASEVER_NODOT=$(PYBASEVER_NODOT) -DARCH=$(ARCH) installer.nsi
 	touch mod-installer
-	-beep -r 3
 
 
 clean:

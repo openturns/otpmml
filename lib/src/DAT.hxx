@@ -1,6 +1,5 @@
 //                                               -*- C++ -*-
 /**
- *  @file  DAT.hxx
  *  @brief Utility class to import/export Uranie .dat files
  *
  *  Copyright (C) 2014 EDF
@@ -25,8 +24,7 @@
 
 #include "OTPMMLprivate.hxx"
 
-#include <NumericalSample.hxx>
-#include <Collection.hxx>
+#include <openturns/NumericalSample.hxx>
 
 namespace OTPMML
 {

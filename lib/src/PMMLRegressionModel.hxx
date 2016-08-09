@@ -23,8 +23,7 @@
 #ifndef OTPMML_PMMLREGRESSIONMODEL_HXX
 #define OTPMML_PMMLREGRESSIONMODEL_HXX
 
-#include <NumericalSample.hxx>
-#include <Collection.hxx>
+#include <openturns/NumericalSample.hxx>
 
 #include "OTPMMLprivate.hxx"
 

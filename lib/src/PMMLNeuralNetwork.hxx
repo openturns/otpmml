@@ -23,11 +23,8 @@
 #ifndef OTPMML_PMMLNEURALNETWORK_HXX
 #define OTPMML_PMMLNEURALNETWORK_HXX
 
-#include <Matrix.hxx>
-#include <NumericalPoint.hxx>
-#include <NumericalSample.hxx>
-#include <Indices.hxx>
-#include <NumericalMathFunction.hxx>
+#include <openturns/Matrix.hxx>
+#include <openturns/NumericalMathFunction.hxx>
 
 #include "OTPMMLprivate.hxx"
 
