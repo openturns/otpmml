@@ -24,6 +24,11 @@ URL:            http://www.openturns.org/
 Source0:        http://downloads.sourceforge.net/openturns-modules/otpmml/otpmml-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, swig
+%if 0%{?suse_version}
+BuildRequires:  gcc-fortran
+%else
+BuildRequires:  gcc-gfortran
+%endif
 BuildRequires:  openturns-devel
 BuildRequires:  python-openturns
 BuildRequires:  python-devel
@@ -66,10 +71,9 @@ Python textual interface to OTPMML uncertainty library
 %setup -q
 
 %build
-%cmake -DCMAKE_INSTALL_PREFIX=/usr \
-       -DINSTALL_DESTDIR:PATH=%{buildroot} \
-       -DSYSTEM_INSTALL=ON . \
-       -DBUILD_DOC=OFF
+%cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
+       -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
+       -DUSE_SPHINX=OFF .
 make %{?_smp_mflags}
 
 %install
@@ -107,6 +111,7 @@ rm -rf %{buildroot}
 %files -n python-%{name}
 %defattr(-,root,root,-)
 %{python_sitearch}/%{name}
+
 
 %changelog
 * Wed Nov 28 2012 Julien Schueller <schueller at phimeca dot com> 0.0-1

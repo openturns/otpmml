@@ -18,7 +18,10 @@ string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 # set module dir to find custom scripts
 list ( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
-find_package ( OpenTURNS NO_MODULE REQUIRED )
+find_package (OpenTURNS NO_MODULE REQUIRED)
+if (OPENTURNS_FOUND)
+  message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR}")
+endif ()
 include ( ${OPENTURNS_USE_FILE} )
 set ( OTPMML_DEFINITIONS ${OPENTURNS_DEFINITIONS} )
 if (NOT BUILD_SHARED_LIBS)
@@ -83,17 +86,13 @@ foreach (_var PYTHON_MODULE_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH)
   string (REPLACE "\\" "\\\\" ${_var} ${NATIVE_OTPMML_${_var}})
 endforeach ()
 
-if (CMAKE_INSTALL_PREFIX MATCHES "^/usr")
-  set (SYSTEM_INSTALL ON)
-else ()
-  set (SYSTEM_INSTALL OFF)
-endif ()
-
-# Selectively add or remove RPATH from executable
-if (NOT SYSTEM_INSTALL)
-  set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
-  set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-endif ()
+# RPATH settings
+set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH} ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+if(POLICY CMP0042)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0042 NEW)
+endif()
 
 # Some useful macros to ease CMakeLists.txt file writing
 set ( SOURCEFILES "" CACHE INTERNAL "List of source files to compile" )
@@ -144,7 +143,7 @@ set ( CPACK_BINARY_STGZ           "OFF"          )
 set ( CPACK_BINARY_TBZ2           "ON"           )
 set ( CPACK_BINARY_TGZ            "ON"           )
 set ( CPACK_BINARY_TZ             "OFF"          )
-set ( CPACK_SOURCE_IGNORE_FILES "/.svn;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}" )
+set ( CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}" )
 set ( PACKAGE_NAME           ${CPACK_PACKAGE_NAME} )
 set ( PACKAGE_VERSION        ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR} )
 if ( CPACK_PACKAGE_VERSION_PATCH )
@@ -209,7 +208,7 @@ install ( FILES cmake/UseOTPMML.cmake
           DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
         )
 
-else ( CMAKE_VERSION VERSION_LESS 2.8.8 )
+else ()
 
   include(CMakePackageConfigHelpers)
   configure_package_config_file (
@@ -231,6 +230,6 @@ else ( CMAKE_VERSION VERSION_LESS 2.8.8 )
                   ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfigVersion.cmake
             DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
           )
-endif ( CMAKE_VERSION VERSION_LESS 2.8.8 )
+endif ()
 
 include (CPack)

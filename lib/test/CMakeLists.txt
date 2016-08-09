@@ -12,10 +12,8 @@ if ( MINGW )
 endif ()
 
 set ( CHECK_ENVIRONMENT 
-      "LD_LIBRARY_PATH=${INSTALL_DESTDIR}${LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
       ${ADAPT_CHECK_TESTS_EXPONENT} 
     )
-
 
 set ( CHECK_TO_BE_RUN )
 macro ( ot_check_test TESTNAME )
