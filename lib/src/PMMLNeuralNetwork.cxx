@@ -97,9 +97,9 @@ String PMMLNeuralNetwork::getNeuralInputName(UnsignedInteger id) const
 }
 
 /** Get bias of neurons in the given layer */
-NumericalPoint PMMLNeuralNetwork::getBiasAtLayer(UnsignedInteger layerIndex) const
+Point PMMLNeuralNetwork::getBiasAtLayer(UnsignedInteger layerIndex) const
 {
-  NumericalPoint result(getLayerSize(layerIndex));
+  Point result(getLayerSize(layerIndex));
   setXPathContext();
   String query(OSS() << "./" << pmml_->xpathNsPrefix_ << "NeuralLayer[" << (1 + layerIndex) << "]/" << pmml_->xpathNsPrefix_ << "Neuron/@bias");
   xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST query.c_str(), pmml_->xpathContext_);
@@ -174,7 +174,7 @@ Matrix PMMLNeuralNetwork::getWeightsAtLayer(UnsignedInteger layerIndex) const
         {
           UnsignedInteger countAttributes(0);
           UnsignedInteger fromId(0);
-          NumericalScalar weight(0.0);
+          Scalar weight(0.0);
           for (xmlAttr *cur_attr = cur_node->properties;
                cur_attr != NULL; cur_attr = cur_attr->next)
           {
@@ -231,10 +231,10 @@ Indices PMMLNeuralNetwork::getNeuronIdsAtLayer(UnsignedInteger layerIndex) const
 }
 
 /** Get coefficients needed to normalize inputs */
-NumericalSample PMMLNeuralNetwork::getInputsNormalization() const
+Sample PMMLNeuralNetwork::getInputsNormalization() const
 {
   const UnsignedInteger nrInputs(getNumberOfInputs());
-  NumericalSample result(nrInputs, 4);
+  Sample result(nrInputs, 4);
   Description description(4);
   description[0] = "orig0";
   description[1] = "orig1";
@@ -303,10 +303,10 @@ NumericalSample PMMLNeuralNetwork::getInputsNormalization() const
 }
 
 /** Get coefficients needed to normalize outputs */
-NumericalSample PMMLNeuralNetwork::getOutputsNormalization() const
+Sample PMMLNeuralNetwork::getOutputsNormalization() const
 {
   const UnsignedInteger nrOutputs(getNumberOfOutputs());
-  NumericalSample result(nrOutputs, 4);
+  Sample result(nrOutputs, 4);
   Description description(4);
   description[0] = "orig0";
   description[1] = "orig1";
@@ -375,17 +375,17 @@ NumericalSample PMMLNeuralNetwork::getOutputsNormalization() const
   return result;
 }
 
-/** Get input normalization as a NumericalMathFunction */
-NumericalMathFunction PMMLNeuralNetwork::getInputsNormalizationFunction() const
+/** Get input normalization as a Function */
+Function PMMLNeuralNetwork::getInputsNormalizationFunction() const
 {
   // See http://www.dmg.org/v3-0/Transformations.html
-  const NumericalSample input(getInputsNormalization());
+  const Sample input(getInputsNormalization());
   const UnsignedInteger dimension(input.getSize());
 
   Description inputVariablesNames(dimension);
   Description formulas(dimension);
   if (dimension == 0)
-    return NumericalMathFunction(inputVariablesNames, formulas);
+    return Function(inputVariablesNames, formulas);
   if (input[0][3] == 0.0)
   {
     // Case 1:
@@ -414,19 +414,19 @@ NumericalMathFunction PMMLNeuralNetwork::getInputsNormalizationFunction() const
       formulas[d] = (OSS().setPrecision(20) << (minus ? "- " : "" ) << " (" << inputVariablesNames[d] << (input[d][0] < 0.0 ? " + " : " - ") << std::abs(input[d][0]) << ") / " << (0.5 * std::abs(input[d][1] - input[d][0])) << " - 1.0");
     }
   }
-  return NumericalMathFunction(inputVariablesNames, formulas);
+  return Function(inputVariablesNames, formulas);
 }
 
-/** Get output normalization as a NumericalMathFunction */
-NumericalMathFunction PMMLNeuralNetwork::getOutputsNormalizationFunction() const
+/** Get output normalization as a Function */
+Function PMMLNeuralNetwork::getOutputsNormalizationFunction() const
 {
-  const NumericalSample output(getOutputsNormalization());
+  const Sample output(getOutputsNormalization());
   const UnsignedInteger dimension(output.getSize());
 
   Description outputVariablesNames(dimension);
   Description formulas(dimension);
   if (dimension == 0)
-    return NumericalMathFunction(outputVariablesNames, formulas);
+    return Function(outputVariablesNames, formulas);
   if (output[0][3] == 0.0)
   {
     // Case 1:
@@ -457,20 +457,20 @@ NumericalMathFunction PMMLNeuralNetwork::getOutputsNormalizationFunction() const
       formulas[d] =(OSS().setPrecision(20) << output[d][0] << (minus ? " - " : " + " ) << (0.5 * std::abs(output[d][1] - output[d][0])) << " * (" << outputVariablesNames[d] << " + 1.0)");
     }
   }
-  return NumericalMathFunction(outputVariablesNames, formulas);
+  return Function(outputVariablesNames, formulas);
 }
 
-/** Get evaluation function of a given layer as a NumericalMathFunction */
-NumericalMathFunction PMMLNeuralNetwork::getEvaluationFunctionAtLayer(UnsignedInteger layerIndex) const
+/** Get evaluation function of a given layer as a Function */
+Function PMMLNeuralNetwork::getEvaluationFunctionAtLayer(UnsignedInteger layerIndex) const
 {
   // See http://www.dmg.org/v3-0/Transformations.html
-  const NumericalSample input(getInputsNormalization());
+  const Sample input(getInputsNormalization());
   const UnsignedInteger size(getLayerSize(layerIndex));
-  if (size == 0) return NumericalMathFunction();
+  if (size == 0) return Function();
 
   String activation(getActivationFunctionAtLayer(layerIndex));
 
-  const NumericalPoint bias(getBiasAtLayer(layerIndex));
+  const Point bias(getBiasAtLayer(layerIndex));
   const Matrix weights(getWeightsAtLayer(layerIndex));
 
   UnsignedInteger prevSize;
@@ -521,7 +521,7 @@ NumericalMathFunction PMMLNeuralNetwork::getEvaluationFunctionAtLayer(UnsignedIn
       formulas[i] = String(stream);
     }
   }
-  return NumericalMathFunction(inputVariablesNames, formulas);
+  return Function(inputVariablesNames, formulas);
 }
 
 } /* namespace OTPMML */

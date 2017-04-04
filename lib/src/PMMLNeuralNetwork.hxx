@@ -24,7 +24,7 @@
 #define OTPMML_PMMLNEURALNETWORK_HXX
 
 #include <openturns/Matrix.hxx>
-#include <openturns/NumericalMathFunction.hxx>
+#include <openturns/Function.hxx>
 
 #include "OTPMMLprivate.hxx"
 
@@ -61,7 +61,7 @@ public:
   OT::String getNeuralInputName(OT::UnsignedInteger id) const;
 
   /** Get bias of neurons in the given layer */
-  OT::NumericalPoint getBiasAtLayer(OT::UnsignedInteger layerIndex) const;
+  OT::Point getBiasAtLayer(OT::UnsignedInteger layerIndex) const;
 
   /** Get weights of neurons in the given layer; dimensions are size(layerIndex-1) x size(layerIndex) */
   OT::Matrix getWeightsAtLayer(OT::UnsignedInteger layerIndex) const;
@@ -73,19 +73,19 @@ public:
   OT::Indices getNeuronIdsAtLayer(OT::UnsignedInteger layerIndex) const;
 
   /** Get coefficients needed to normalize inputs */
-  OT::NumericalSample getInputsNormalization() const;
+  OT::Sample getInputsNormalization() const;
 
   /** Get coefficients needed to normalize outputs */
-  OT::NumericalSample getOutputsNormalization() const;
+  OT::Sample getOutputsNormalization() const;
 
-  /** Get input normalization as a NumericalMathFunction */
-  OT::NumericalMathFunction getInputsNormalizationFunction() const;
+  /** Get input normalization as a Function */
+  OT::Function getInputsNormalizationFunction() const;
 
-  /** Get output normalization as a NumericalMathFunction */
-  OT::NumericalMathFunction getOutputsNormalizationFunction() const;
+  /** Get output normalization as a Function */
+  OT::Function getOutputsNormalizationFunction() const;
 
-  /** Get evaluation function of a given layer as a NumericalMathFunction */
-  OT::NumericalMathFunction getEvaluationFunctionAtLayer(OT::UnsignedInteger layerIndex) const;
+  /** Get evaluation function of a given layer as a Function */
+  OT::Function getEvaluationFunctionAtLayer(OT::UnsignedInteger layerIndex) const;
 
 private:
   /** Set XPath context to node_ */

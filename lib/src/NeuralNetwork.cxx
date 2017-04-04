@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  NeuralNetwork.cxx
- *  @brief The class NeuralNetwork creates a NumericalMathFunction from a neural network read in a PMML file
+ *  @brief The class NeuralNetwork creates a Function from a neural network read in a PMML file
  *
  *  Copyright (C) 2014 EDF
  *
@@ -35,15 +35,15 @@ CLASSNAMEINIT(NeuralNetwork);
 
 /* Default constructor */
 NeuralNetwork::NeuralNetwork(const FileName & pmmlFile, const String& modelName)
-  : NumericalMathFunction()
+  : Function()
 {
   xmlInitParser();
   PMMLDoc doc(pmmlFile);
   PMMLNeuralNetwork nnet(doc.getNeuralNetwork(modelName));
-  NumericalMathFunction composedFunction(nnet.getInputsNormalizationFunction());
+  Function composedFunction(nnet.getInputsNormalizationFunction());
   for (UnsignedInteger layer = 0; layer < nnet.getNumberOfLayers(); ++layer)
-    composedFunction = NumericalMathFunction(nnet.getEvaluationFunctionAtLayer(layer), composedFunction);
-  composedFunction = NumericalMathFunction(nnet.getOutputsNormalizationFunction(), composedFunction);
+    composedFunction = Function(nnet.getEvaluationFunctionAtLayer(layer), composedFunction);
+  composedFunction = Function(nnet.getOutputsNormalizationFunction(), composedFunction);
   xmlCleanupParser();
   setName(nnet.getModelName());
   getImplementation().swap(composedFunction.getImplementation());

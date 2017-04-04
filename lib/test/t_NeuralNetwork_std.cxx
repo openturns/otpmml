@@ -12,13 +12,13 @@ using namespace OTPMML;
 
 int main(int argc, char **argv)
 {
-  NumericalPoint reseau(4);
+  Point reseau(4);
   reseau[0] = 3.048020426e+00;
   reseau[1] = 4.429896757e+04;
   reseau[2] = 2.550648980e+02;
   reseau[3] = 3.711170093e+02;
 
-  NumericalMathFunction annFunction = NeuralNetwork("uranie_ann_poutre.pmml");
+  Function annFunction = NeuralNetwork("uranie_ann_poutre.pmml");
   std::cout << annFunction(reseau) << " expected value=46.5277" << std::endl;
 
   return 0;

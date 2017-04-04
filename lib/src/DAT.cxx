@@ -26,7 +26,7 @@
 
 #include <openturns/Log.hxx>
 #include <openturns/Exception.hxx>
-#include <openturns/NumericalSample.hxx>
+#include <openturns/Sample.hxx>
 #include <openturns/Os.hxx>
 
 #include <libxml/parser.h>
@@ -43,10 +43,10 @@ namespace OTPMML
 CLASSNAMEINIT(DAT);
 
 /** Import experiment plane from a .dat file */
-DAT::NumericalSampleCollection DAT::Import(const FileName& datFile)
+DAT::SampleCollection DAT::Import(const FileName& datFile)
 {
-  // Read file contents into a single NumericalSample
-  NumericalSample inputOutput(NumericalSample::ImportFromTextFile(datFile));
+  // Read file contents into a single Sample
+  Sample inputOutput(Sample::ImportFromTextFile(datFile));
 
   // Re-read file to parse comments and set NS description
   std::ifstream inputFile(datFile.c_str());
@@ -91,11 +91,11 @@ DAT::NumericalSampleCollection DAT::Import(const FileName& datFile)
     inputOutput.setDescription(fileDescription);
   }
 
-  // Now split into 2 NumericalSample for input and output.
+  // Now split into 2 Sample for input and output.
   // There is no "unstack" method, do it by hand.
   const UnsignedInteger size(inputOutput.getSize());
   const UnsignedInteger dimension(inputOutput.getDimension());
-  NumericalSample x(size, dimension - 1);
+  Sample x(size, dimension - 1);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j + 1 < dimension; ++j)
       x[i][j] = inputOutput[i][j];
@@ -104,15 +104,15 @@ DAT::NumericalSampleCollection DAT::Import(const FileName& datFile)
     fileDescription.erase(fileDescription.begin() + dimension - 1);
     x.setDescription(fileDescription);
   }
-  Collection<NumericalSample> result(2);
+  Collection<Sample> result(2);
   result[0] = x;
   result[1] = inputOutput.getMarginal(dimension - 1);
   return result;
 }
 
 /** Export experiment plane into a .dat file.
-    NumericalSample contains both input and output */
-void DAT::Export(const FileName& datFile, const NumericalSample& inputOutput)
+    Sample contains both input and output */
+void DAT::Export(const FileName& datFile, const Sample& inputOutput)
 {
   const UnsignedInteger size(inputOutput.getSize());
   const Description description(inputOutput.getDescription());
@@ -147,11 +147,11 @@ void DAT::Export(const FileName& datFile, const NumericalSample& inputOutput)
 }
 
 /** Export experiment plane into a .dat file */
-void DAT::Export(const FileName& datFile, const NumericalSample& input, const NumericalSample& output)
+void DAT::Export(const FileName& datFile, const Sample& input, const Sample& output)
 {
   if (output.getSize() != input.getSize())
     throw InvalidArgumentException(HERE) << "Size mismatch: input size != output size";
-  NumericalSample inputOutput(input);
+  Sample inputOutput(input);
   inputOutput.stack(output);
   Export(datFile, inputOutput);
 }

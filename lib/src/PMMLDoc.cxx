@@ -208,12 +208,12 @@ PMMLDoc::StringCollection PMMLDoc::getModelNames(const String & category) const
   return result;
 }
 
-NumericalScalar PMMLDoc::getXPathQueryScalar(const String & xpathQuery) const
+Scalar PMMLDoc::getXPathQueryScalar(const String & xpathQuery) const
 {
   checkInitialized();
-  NumericalScalar result = 0.0;
+  Scalar result = 0.0;
   xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST xpathQuery.c_str(), xpathContext_);
-  if (!xmlXPathIsNaN(xpathObj->floatval)) result = static_cast<NumericalScalar>(xpathObj->floatval);
+  if (!xmlXPathIsNaN(xpathObj->floatval)) result = static_cast<Scalar>(xpathObj->floatval);
   xmlXPathFreeObject(xpathObj);
   return result;
 }
@@ -319,8 +319,8 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
   checkInitialized();
   addHeader();
 
-  const NumericalSample dataIn(regression.getDataIn());
-  NumericalSample dataOut(regression.getDataOut());
+  const Sample dataIn(regression.getDataIn());
+  Sample dataOut(regression.getDataOut());
   Description descriptionIn(dataIn.getDescription());
   for (UnsignedInteger i = 0; i < dataIn.getDimension(); ++i)
     if (descriptionIn[i].empty())
@@ -328,7 +328,7 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
   Description descriptionOut(dataOut.getDescription());
   if (descriptionOut[0].empty())
     descriptionOut[0] = "output";
-  const NumericalPoint intercept(regression.getConstant());
+  const Point intercept(regression.getConstant());
   if (intercept.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Intercept of LinearLeastSquares must be a scalar, but has dimension " << intercept.getDimension();
   const Matrix linear(regression.getLinear());

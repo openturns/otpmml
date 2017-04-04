@@ -36,20 +36,20 @@ int main(int argc, char **argv)
   std::cout << "Outputs normalization = " << nnet.getOutputsNormalization() << std::endl;
   std::cout << "Evaluation function at layer 2 = " << nnet.getEvaluationFunctionAtLayer(2).__repr__() << std::endl;
 
-  NumericalPoint reseau(4);
+  Point reseau(4);
   reseau[0] = 3.048020426e+00;
   reseau[1] = 4.429896757e+04;
   reseau[2] = 2.550648980e+02;
   reseau[3] = 3.711170093e+02;
 
   std::cout << "reseau=" << reseau << std::endl;
-  NumericalPoint normInput(nnet.getInputsNormalizationFunction()(reseau));
+  Point normInput(nnet.getInputsNormalizationFunction()(reseau));
   std::cout << "normInput=" << normInput << std::endl;
-  NumericalPoint x0(nnet.getEvaluationFunctionAtLayer(0)(normInput));
+  Point x0(nnet.getEvaluationFunctionAtLayer(0)(normInput));
   std::cout << "x0=" << x0 << std::endl;
-  NumericalPoint x1(nnet.getEvaluationFunctionAtLayer(1)(x0));
+  Point x1(nnet.getEvaluationFunctionAtLayer(1)(x0));
   std::cout << "x1=" << x1 << std::endl;
-  NumericalPoint y(nnet.getOutputsNormalizationFunction()(x1));
+  Point y(nnet.getOutputsNormalizationFunction()(x1));
   std::cout << "y=" << y << std::endl;
 
   doc.reset();

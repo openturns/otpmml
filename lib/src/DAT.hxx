@@ -24,7 +24,7 @@
 
 #include "OTPMMLprivate.hxx"
 
-#include <openturns/NumericalSample.hxx>
+#include <openturns/Sample.hxx>
 
 namespace OTPMML
 {
@@ -40,16 +40,16 @@ class OTPMML_API DAT
   CLASSNAME;
 
 public:
-  typedef OT::Collection<OT::NumericalSample> NumericalSampleCollection;
+  typedef OT::Collection<OT::Sample> SampleCollection;
 
   /** Import experiment plane from a .dat file */
-  static NumericalSampleCollection Import(const OT::FileName& datFile);
+  static SampleCollection Import(const OT::FileName& datFile);
 
   /** Export experiment plane into a .dat file */
-  static void Export(const OT::FileName& datFile, const OT::NumericalSample& input, const OT::NumericalSample& output);
+  static void Export(const OT::FileName& datFile, const OT::Sample& input, const OT::Sample& output);
 
   /** Export experiment plane into a .dat file */
-  static void Export(const OT::FileName& datFile, const OT::NumericalSample& inputOutput);
+  static void Export(const OT::FileName& datFile, const OT::Sample& inputOutput);
 
 }; /* class DAT */
 

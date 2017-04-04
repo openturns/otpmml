@@ -4,22 +4,22 @@
 #include <openturns/PythonWrappingFunctions.hxx>
 #include "DAT.hxx"
 #include <openturns/PersistentCollection.hxx>
-#include <openturns/NumericalSample.hxx>
+#include <openturns/Sample.hxx>
 %}
 
 %include DAT_doc.i
 
-%template(NumericalSampleCollection) OT::Collection<OT::NumericalSample>;
-%template(NumericalSamplePersistentCollection) OT::PersistentCollection<OT::NumericalSample>;
+%template(SampleCollection) OT::Collection<OT::Sample>;
+%template(SamplePersistentCollection) OT::PersistentCollection<OT::Sample>;
 
 %include DAT.hxx
 
-%extend OT::Collection<OT::NumericalSample>
+%extend OT::Collection<OT::Sample>
 {
 
-OT::Collection<OT::NumericalSample> (PyObject * pyObj)
+OT::Collection<OT::Sample> (PyObject * pyObj)
 {
-  return OT::buildCollectionFromPySequence<OT::NumericalSample>( pyObj );
+  return OT::buildCollectionFromPySequence<OT::Sample>( pyObj );
 }
 
 }
