@@ -38,14 +38,14 @@ RegressionModel::RegressionModel(const FileName & pmmlFile, const OT::String& mo
   xmlInitParser();
   PMMLDoc doc(pmmlFile);
   PMMLRegressionModel model(doc.getRegressionModel(modelName));
-  const NumericalSample coefficients(model.getCoefficients());
-  const NumericalScalar intercept(model.getIntercept());
+  const Sample coefficients(model.getCoefficients());
+  const Scalar intercept(model.getIntercept());
   // There is no LinearLeastSquares constructor with explicit
   // coefficients, thus build a problem which will give the
   // expected solution.
   const UnsignedInteger dimension(coefficients.getDimension());
-  NumericalSample inputSample(dimension + 1, dimension);
-  NumericalSample outputSample(dimension + 1, 1);
+  Sample inputSample(dimension + 1, dimension);
+  Sample outputSample(dimension + 1, 1);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     inputSample(i, i) = 1.0;

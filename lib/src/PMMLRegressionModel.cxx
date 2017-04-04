@@ -60,7 +60,7 @@ void PMMLRegressionModel::setXPathContext() const
 }
 
 /** Get intercept */
-NumericalScalar PMMLRegressionModel::getIntercept() const
+Scalar PMMLRegressionModel::getIntercept() const
 {
   setXPathContext();
   checkValid();
@@ -76,16 +76,16 @@ String PMMLRegressionModel::getTargetVariableName() const
 }
 
 /** Get coefficients */
-NumericalSample PMMLRegressionModel::getCoefficients() const
+Sample PMMLRegressionModel::getCoefficients() const
 {
   setXPathContext();
   checkValid();
   xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("RegressionTable/")+pmml_->xpathNsPrefix_+String("NumericPredictor")).c_str(), pmml_->xpathContext_);
-  NumericalSample result;
+  Sample result;
   if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
   {
     Collection<String> names;
-    Collection<NumericalScalar> coefficients;
+    Collection<Scalar> coefficients;
     for (int cnt = 0; cnt < xpathObj->nodesetval->nodeNr; ++cnt)
     {
       for (xmlAttr *cur_attr = xpathObj->nodesetval->nodeTab[cnt]->properties;
@@ -102,7 +102,7 @@ NumericalSample PMMLRegressionModel::getCoefficients() const
         }
       }
     }
-    result = NumericalSample(1, NumericalPoint(coefficients));
+    result = Sample(1, Point(coefficients));
     result.setDescription(names);
   }
   xmlXPathFreeObject(xpathObj);

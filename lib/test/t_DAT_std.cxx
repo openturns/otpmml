@@ -18,12 +18,12 @@ int main(int argc, char **argv)
   variables[2] = "L";
   variables[3] = "I";
   formula[0] = "F*L^3/(3*E*I)";
-  NumericalMathFunction poutre(variables, formula);
+  Function poutre(variables, formula);
 
-  Collection<NumericalSample> samples(DAT::Import("input_output.dat"));
+  Collection<Sample> samples(DAT::Import("input_output.dat"));
   std::cout << "Input:" << samples[0] << std::endl;
   std::cout << "Output:" << samples[1] << std::endl;
-  const NumericalSample result(poutre(samples[0]));
+  const Sample result(poutre(samples[0]));
   std::cout << "Analytical output:" << result << std::endl;
   for (UnsignedInteger i = 0; i < result.getSize(); ++i)
   {

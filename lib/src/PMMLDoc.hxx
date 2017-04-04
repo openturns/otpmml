@@ -95,8 +95,8 @@ private:
   /** Get modelName attributes of a given category (NeuralNetwork or RegressionModel) */
   StringCollection getModelNames(const OT::String & category) const;
 
-  /** Get result of an XPath query as a NumericalScalar */
-  OT::NumericalScalar getXPathQueryScalar(const OT::String & xpathQuery) const;
+  /** Get result of an XPath query as a Scalar */
+  OT::Scalar getXPathQueryScalar(const OT::String & xpathQuery) const;
 
   /** Get result of an XPath query as a String */
   OT::String getXPathQueryString(const OT::String & xpathQuery) const;

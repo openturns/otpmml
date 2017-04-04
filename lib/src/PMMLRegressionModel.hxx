@@ -23,7 +23,7 @@
 #ifndef OTPMML_PMMLREGRESSIONMODEL_HXX
 #define OTPMML_PMMLREGRESSIONMODEL_HXX
 
-#include <openturns/NumericalSample.hxx>
+#include <openturns/Sample.hxx>
 
 #include "OTPMMLprivate.hxx"
 
@@ -47,13 +47,13 @@ public:
   OT::String getModelName() const;
 
   /** Get intercept */
-  OT::NumericalScalar getIntercept() const;
+  OT::Scalar getIntercept() const;
 
   /** Get name of target variable */
   OT::String getTargetVariableName() const;
 
   /** Get coefficients */
-  OT::NumericalSample getCoefficients() const;
+  OT::Sample getCoefficients() const;
 
 private:
   /** Set XPath context to node_ */

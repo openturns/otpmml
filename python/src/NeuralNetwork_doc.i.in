@@ -20,7 +20,7 @@ Examples
 
 Notes
 ------
-The result object is of type NumericalMathFunction.
+The result object is of type Function.
 "
 
 %enddef
