@@ -37,7 +37,7 @@ Inputs normalization =     [ orig0           orig1           norm0           nor
 3 : [     0             397.5            -0.076257        0           ]
 Outputs normalization =     [ orig0     orig1     norm0     norm1     ]
 0 : [  0        12.6267   -0.343491  0        ]
-Evaluation function at layer 2 = class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoNumericalMathEvaluationImplementation name=Unnamed gradientImplementation=class=NoNumericalMathGradientImplementation name=Unnamed hessianImplementation=class=NoNumericalMathHessianImplementation name=Unnamed
+Evaluation function at layer 2 = class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed
 reseau=[3.04802,44299,255.065,371.117]
 normInput=[-7.63027,1.5889,0.0224802,-0.870379]
 x0=[0.00235276,0.312859,0.386599,0.168326,0.000351066,0.600714,0.558012,0.633867,0.295807,0.00872965]#10
