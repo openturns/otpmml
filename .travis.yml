@@ -1,26 +1,15 @@
 language: cpp
+dist: trusty
 sudo: required
 
 install:
   - curl http://ubuntu.openturns.org/openturns.org-repo.key | sudo apt-key add -
-  - echo deb http://ubuntu.openturns.org precise main | sudo tee /etc/apt/sources.list.d/openturns.list
+  - echo deb http://ubuntu.openturns.org trusty main | sudo tee /etc/apt/sources.list.d/openturns.list
   - sudo apt-get update
-  - sudo apt-get -y install libopenturns-dev python-openturns cmake gfortran swig texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra python-sphinx python-matplotlib dvipng libkpathsea-dev libpotrace-dev python-lxml xmlto asciidoc
-# dvisvgm
-  - git clone https://github.com/mgieseki/dvisvgm.git
-  - pushd dvisvgm
-  - ./autogen.sh
-  - ./configure --prefix=$HOME/.local
-  - make -j2
-  - make install
-  - export PATH=$PATH:$HOME/.local/bin
-  - popd
-# sphinx >=1.2 is looking better
-  - git clone https://github.com/sphinx-doc/sphinx.git
-  - pushd sphinx
-  - python setup.py install --user
-  - popd
- 
+  - sudo apt-get -y install libopenturns-dev python-openturns cmake gfortran swig texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra python-dev
+  - sudo rm -r /opt/python/*
+  - pip install sphinx numpydoc matplotlib --user --upgrade
+
 script:
   - cmake -DCMAKE_INSTALL_PREFIX=~/.local
     -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
