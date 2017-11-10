@@ -40,7 +40,7 @@ using namespace OT;
 namespace OTPMML
 {
 
-CLASSNAMEINIT(DAT);
+CLASSNAMEINIT(DAT)
 
 /** Import experiment plane from a .dat file */
 DAT::SampleCollection DAT::Import(const FileName& datFile)

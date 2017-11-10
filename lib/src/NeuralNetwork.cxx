@@ -31,7 +31,7 @@ using namespace OT;
 namespace OTPMML
 {
 
-CLASSNAMEINIT(NeuralNetwork);
+CLASSNAMEINIT(NeuralNetwork)
 
 /* Default constructor */
 NeuralNetwork::NeuralNetwork(const FileName & pmmlFile, const String& modelName)
