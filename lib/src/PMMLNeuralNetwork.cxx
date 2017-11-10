@@ -22,8 +22,7 @@
 #include "PMMLNeuralNetwork.hxx"
 #include "PMMLDoc.hxx"
 
-#include <openturns/Log.hxx>
-#include <openturns/Exception.hxx>
+#include <openturns/SymbolicFunction.hxx>
 
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
@@ -385,7 +384,7 @@ Function PMMLNeuralNetwork::getInputsNormalizationFunction() const
   Description inputVariablesNames(dimension);
   Description formulas(dimension);
   if (dimension == 0)
-    return Function(inputVariablesNames, formulas);
+    return SymbolicFunction(inputVariablesNames, formulas);
   if (input[0][3] == 0.0)
   {
     // Case 1:
@@ -414,7 +413,7 @@ Function PMMLNeuralNetwork::getInputsNormalizationFunction() const
       formulas[d] = (OSS().setPrecision(20) << (minus ? "- " : "" ) << " (" << inputVariablesNames[d] << (input[d][0] < 0.0 ? " + " : " - ") << std::abs(input[d][0]) << ") / " << (0.5 * std::abs(input[d][1] - input[d][0])) << " - 1.0");
     }
   }
-  return Function(inputVariablesNames, formulas);
+  return SymbolicFunction(inputVariablesNames, formulas);
 }
 
 /** Get output normalization as a Function */
@@ -426,7 +425,7 @@ Function PMMLNeuralNetwork::getOutputsNormalizationFunction() const
   Description outputVariablesNames(dimension);
   Description formulas(dimension);
   if (dimension == 0)
-    return Function(outputVariablesNames, formulas);
+    return SymbolicFunction(outputVariablesNames, formulas);
   if (output[0][3] == 0.0)
   {
     // Case 1:
@@ -457,7 +456,7 @@ Function PMMLNeuralNetwork::getOutputsNormalizationFunction() const
       formulas[d] =(OSS().setPrecision(20) << output[d][0] << (minus ? " - " : " + " ) << (0.5 * std::abs(output[d][1] - output[d][0])) << " * (" << outputVariablesNames[d] << " + 1.0)");
     }
   }
-  return Function(outputVariablesNames, formulas);
+  return SymbolicFunction(outputVariablesNames, formulas);
 }
 
 /** Get evaluation function of a given layer as a Function */
@@ -521,7 +520,7 @@ Function PMMLNeuralNetwork::getEvaluationFunctionAtLayer(UnsignedInteger layerIn
       formulas[i] = String(stream);
     }
   }
-  return Function(inputVariablesNames, formulas);
+  return SymbolicFunction(inputVariablesNames, formulas);
 }
 
 } /* namespace OTPMML */

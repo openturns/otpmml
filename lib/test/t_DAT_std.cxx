@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   variables[2] = "L";
   variables[3] = "I";
   formula[0] = "F*L^3/(3*E*I)";
-  Function poutre(variables, formula);
+  SymbolicFunction poutre(variables, formula);
 
   Collection<Sample> samples(DAT::Import("input_output.dat"));
   std::cout << "Input:" << samples[0] << std::endl;
