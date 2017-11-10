@@ -24,7 +24,7 @@
 #include "PMMLDoc.hxx"
 #include "PMMLNeuralNetwork.hxx"
 
-#include <libxml/parser.h>
+#include <openturns/ComposedFunction.hxx>
 
 using namespace OT;
 
@@ -42,8 +42,8 @@ NeuralNetwork::NeuralNetwork(const FileName & pmmlFile, const String& modelName)
   PMMLNeuralNetwork nnet(doc.getNeuralNetwork(modelName));
   Function composedFunction(nnet.getInputsNormalizationFunction());
   for (UnsignedInteger layer = 0; layer < nnet.getNumberOfLayers(); ++layer)
-    composedFunction = Function(nnet.getEvaluationFunctionAtLayer(layer), composedFunction);
-  composedFunction = Function(nnet.getOutputsNormalizationFunction(), composedFunction);
+    composedFunction = ComposedFunction(nnet.getEvaluationFunctionAtLayer(layer), composedFunction);
+  composedFunction = ComposedFunction(nnet.getOutputsNormalizationFunction(), composedFunction);
   xmlCleanupParser();
   setName(nnet.getModelName());
   getImplementation().swap(composedFunction.getImplementation());

@@ -5,7 +5,7 @@ import openturns as ot
 import otpmml
 
 # Comparison of neuralNetwork with the original function
-poutre = ot.Function(["E", "F", "L", "I"],["F*L^3/(3*E*I)"])
+poutre = ot.SymbolicFunction(["E", "F", "L", "I"],["F*L^3/(3*E*I)"])
 print("poutre=" , repr(poutre))
 
 # Import data used for comparison
