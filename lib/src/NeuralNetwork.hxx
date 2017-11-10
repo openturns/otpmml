@@ -39,7 +39,7 @@ namespace OTPMML
 class OTPMML_API NeuralNetwork
   : public OT::Function
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

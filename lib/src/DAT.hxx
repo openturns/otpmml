@@ -37,7 +37,7 @@ namespace OTPMML
 class OTPMML_API DAT
   : public OT::Object
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef OT::Collection<OT::Sample> SampleCollection;
