@@ -64,7 +64,7 @@ Scalar PMMLRegressionModel::getIntercept() const
 {
   setXPathContext();
   checkValid();
-  return pmml_->getXPathQueryScalar(String("number(./")+pmml_->xpathNsPrefix_+String("RegressionTable/@intercept)"));
+  return pmml_->getXPathQueryScalar(String("number(./") + pmml_->xpathNsPrefix_ + String("RegressionTable/@intercept)"));
 }
 
 /** Get name of target variable */
@@ -80,7 +80,7 @@ Sample PMMLRegressionModel::getCoefficients() const
 {
   setXPathContext();
   checkValid();
-  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("RegressionTable/")+pmml_->xpathNsPrefix_+String("NumericPredictor")).c_str(), pmml_->xpathContext_);
+  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("RegressionTable/") + pmml_->xpathNsPrefix_ + String("NumericPredictor")).c_str(), pmml_->xpathContext_);
   Sample result;
   if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
   {
@@ -94,11 +94,11 @@ Sample PMMLRegressionModel::getCoefficients() const
         if (cur_attr->type != XML_ATTRIBUTE_NODE) continue;
         if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "name"))
         {
-            names.add(String(reinterpret_cast<const char*>(cur_attr->children->content)));
+          names.add(String(reinterpret_cast<const char*>(cur_attr->children->content)));
         }
         else if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "coefficient"))
         {
-            coefficients.add(strtod(reinterpret_cast<const char*>(cur_attr->children->content), NULL));
+          coefficients.add(strtod(reinterpret_cast<const char*>(cur_attr->children->content), NULL));
         }
       }
     }
@@ -121,29 +121,29 @@ void PMMLRegressionModel::checkValid() const
     if (cur_attr->type != XML_ATTRIBUTE_NODE) continue;
     if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "modelType"))
     {
-        const char* modelType = reinterpret_cast<const char*>(cur_attr->children->content);
-        if (0 != strcmp(modelType, "linearRegression"))
-          throw InvalidArgumentException(HERE) << "RegressionModel found with modelType='" << modelType << "', but only 'linearRegression' is supported";
-        break;
+      const char* modelType = reinterpret_cast<const char*>(cur_attr->children->content);
+      if (0 != strcmp(modelType, "linearRegression"))
+        throw InvalidArgumentException(HERE) << "RegressionModel found with modelType='" << modelType << "', but only 'linearRegression' is supported";
+      break;
     }
     if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "functionName"))
     {
-        const char* functionName = reinterpret_cast<const char*>(cur_attr->children->content);
-        if (0 != strcmp(functionName, "regression"))
-          throw InvalidArgumentException(HERE) << "RegressionModel found with functionName='" << functionName << "', but only 'regression' is supported";
-        break;
+      const char* functionName = reinterpret_cast<const char*>(cur_attr->children->content);
+      if (0 != strcmp(functionName, "regression"))
+        throw InvalidArgumentException(HERE) << "RegressionModel found with functionName='" << functionName << "', but only 'regression' is supported";
+      break;
     }
     if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "normalizationMethod"))
     {
-        const char* normalizationMethod = reinterpret_cast<const char*>(cur_attr->children->content);
-        if (0 != strcmp(normalizationMethod, "none"))
-          throw InvalidArgumentException(HERE) << "RegressionModel found with normalizationMethod='" << normalizationMethod << "', but only 'none' is supported";
-        break;
+      const char* normalizationMethod = reinterpret_cast<const char*>(cur_attr->children->content);
+      if (0 != strcmp(normalizationMethod, "none"))
+        throw InvalidArgumentException(HERE) << "RegressionModel found with normalizationMethod='" << normalizationMethod << "', but only 'none' is supported";
+      break;
     }
   }
 
   setXPathContext();
-  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("RegressionTable")).c_str(), pmml_->xpathContext_);
+  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("RegressionTable")).c_str(), pmml_->xpathContext_);
   if(xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
   {
     xmlXPathFreeObject(xpathObj);
@@ -161,15 +161,15 @@ void PMMLRegressionModel::checkValid() const
     if (cur_node->type != XML_ELEMENT_NODE) continue;
     if (0 != xmlStrcmp(cur_node->name, BAD_CAST "NumericPredictor"))
     {
-        const String name(reinterpret_cast<const char*>(cur_node->name));
-        xmlXPathFreeObject(xpathObj);
-        throw InvalidArgumentException(HERE) << "Element <" << name << "> found, but only <NumericPredictor> is supported";
+      const String name(reinterpret_cast<const char*>(cur_node->name));
+      xmlXPathFreeObject(xpathObj);
+      throw InvalidArgumentException(HERE) << "Element <" << name << "> found, but only <NumericPredictor> is supported";
     }
   }
   xmlXPathFreeObject(xpathObj);
 
   setXPathContext();
-  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("RegressionTable/")+pmml_->xpathNsPrefix_+String("NumericPredictor/@exponent")).c_str(), pmml_->xpathContext_);
+  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("RegressionTable/") + pmml_->xpathNsPrefix_ + String("NumericPredictor/@exponent")).c_str(), pmml_->xpathContext_);
   if(xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
   {
     xmlXPathFreeObject(xpathObj);
@@ -182,12 +182,12 @@ void PMMLRegressionModel::checkValid() const
     if (cur_node->type != XML_ATTRIBUTE_NODE) continue;
     if (0 == xmlStrcmp(cur_node->name, BAD_CAST "exponent"))
     {
-        UnsignedInteger exponent(strtol(reinterpret_cast<const char*>(cur_node->children->content), NULL, 10));
-        if (1 != exponent)
-        {
-          xmlXPathFreeObject(xpathObj);
-          throw InvalidArgumentException(HERE) << "Exponent " << exponent << " found, but only exponent=1 is supported";
-        }
+      UnsignedInteger exponent(strtol(reinterpret_cast<const char*>(cur_node->children->content), NULL, 10));
+      if (1 != exponent)
+      {
+        xmlXPathFreeObject(xpathObj);
+        throw InvalidArgumentException(HERE) << "Exponent " << exponent << " found, but only exponent=1 is supported";
+      }
     }
   }
   xmlXPathFreeObject(xpathObj);

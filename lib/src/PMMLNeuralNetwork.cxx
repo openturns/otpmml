@@ -62,14 +62,14 @@ void PMMLNeuralNetwork::setXPathContext() const
 UnsignedInteger PMMLNeuralNetwork::getNumberOfInputs() const
 {
   setXPathContext();
-  return pmml_->getXPathQueryScalar(String("number(./")+pmml_->xpathNsPrefix_+String("NeuralInputs/@numberOfInputs)"));
+  return pmml_->getXPathQueryScalar(String("number(./") + pmml_->xpathNsPrefix_ + String("NeuralInputs/@numberOfInputs)"));
 }
 
 /** Get number of outputs */
 UnsignedInteger PMMLNeuralNetwork::getNumberOfOutputs() const
 {
   setXPathContext();
-  return pmml_->getXPathQueryScalar(String("number(./")+pmml_->xpathNsPrefix_+String("NeuralOutputs/@numberOfOutputs)"));
+  return pmml_->getXPathQueryScalar(String("number(./") + pmml_->xpathNsPrefix_ + String("NeuralOutputs/@numberOfOutputs)"));
 }
 
 /** Get number of layers (= 1 + hidden) */
@@ -126,12 +126,16 @@ Matrix PMMLNeuralNetwork::getWeightsAtLayer(UnsignedInteger layerIndex) const
       fromIndices[i] = i;
     to = getLayerSize(0);
     toIndices = getNeuronIdsAtLayer(0);
-  } else if (layerIndex < getNumberOfLayers()) {
+  }
+  else if (layerIndex < getNumberOfLayers())
+  {
     from = getLayerSize(layerIndex - 1);
     fromIndices = getNeuronIdsAtLayer(layerIndex - 1);
     to = getLayerSize(layerIndex);
     toIndices = getNeuronIdsAtLayer(layerIndex);
-  } else {
+  }
+  else
+  {
     return Matrix();
   }
   if (fromIndices.isEmpty() || toIndices.isEmpty())
@@ -161,8 +165,8 @@ Matrix PMMLNeuralNetwork::getWeightsAtLayer(UnsignedInteger layerIndex) const
       {
         if (cur_attr->type == XML_ATTRIBUTE_NODE && 0 == xmlStrcmp(cur_attr->name, BAD_CAST "id"))
         {
-            toId = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
-            break;
+          toId = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
+          break;
         }
       }
       toId = invToIndices[toId];
@@ -180,13 +184,13 @@ Matrix PMMLNeuralNetwork::getWeightsAtLayer(UnsignedInteger layerIndex) const
             if (cur_attr->type != XML_ATTRIBUTE_NODE) continue;
             if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "from"))
             {
-                fromId = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
-                ++ countAttributes;
+              fromId = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
+              ++ countAttributes;
             }
             else if (0 == xmlStrcmp(cur_attr->name, BAD_CAST "weight"))
             {
-                weight = strtod(reinterpret_cast<const char*>(cur_attr->children->content), NULL);
-                ++ countAttributes;
+              weight = strtod(reinterpret_cast<const char*>(cur_attr->children->content), NULL);
+              ++ countAttributes;
             }
           }
           if (countAttributes != 2) continue;
@@ -242,8 +246,8 @@ Sample PMMLNeuralNetwork::getInputsNormalization() const
   result.setDescription(description);
 
   setXPathContext();
-  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("NeuralInputs/")+pmml_->xpathNsPrefix_+String("NeuralInput/")+pmml_->xpathNsPrefix_+String("DerivedField/")+pmml_->xpathNsPrefix_+String("NormContinuous/")+pmml_->xpathNsPrefix_+String("LinearNorm/@orig")).c_str(), pmml_->xpathContext_);
-  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2*nrInputs)
+  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("NeuralInputs/") + pmml_->xpathNsPrefix_ + String("NeuralInput/") + pmml_->xpathNsPrefix_ + String("DerivedField/") + pmml_->xpathNsPrefix_ + String("NormContinuous/") + pmml_->xpathNsPrefix_ + String("LinearNorm/@orig")).c_str(), pmml_->xpathContext_);
+  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2 * nrInputs)
   {
     for (int cnt = 0; cnt < xpathObj->nodesetval->nodeNr; ++cnt)
     {
@@ -252,8 +256,8 @@ Sample PMMLNeuralNetwork::getInputsNormalization() const
   }
   xmlXPathFreeObject(xpathObj);
   setXPathContext();
-  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("NeuralInputs/")+pmml_->xpathNsPrefix_+String("NeuralInput/")+pmml_->xpathNsPrefix_+String("DerivedField/")+pmml_->xpathNsPrefix_+String("NormContinuous/")+pmml_->xpathNsPrefix_+String("LinearNorm/@norm")).c_str(), pmml_->xpathContext_);
-  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2*nrInputs)
+  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("NeuralInputs/") + pmml_->xpathNsPrefix_ + String("NeuralInput/") + pmml_->xpathNsPrefix_ + String("DerivedField/") + pmml_->xpathNsPrefix_ + String("NormContinuous/") + pmml_->xpathNsPrefix_ + String("LinearNorm/@norm")).c_str(), pmml_->xpathContext_);
+  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2 * nrInputs)
   {
     for (int cnt = 0; cnt < xpathObj->nodesetval->nodeNr; ++cnt)
     {
@@ -314,8 +318,8 @@ Sample PMMLNeuralNetwork::getOutputsNormalization() const
   result.setDescription(description);
 
   setXPathContext();
-  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("NeuralOutputs/")+pmml_->xpathNsPrefix_+String("NeuralOutput/")+pmml_->xpathNsPrefix_+String("DerivedField/")+pmml_->xpathNsPrefix_+String("NormContinuous/")+pmml_->xpathNsPrefix_+String("LinearNorm/@orig")).c_str(), pmml_->xpathContext_);
-  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2*nrOutputs)
+  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("NeuralOutputs/") + pmml_->xpathNsPrefix_ + String("NeuralOutput/") + pmml_->xpathNsPrefix_ + String("DerivedField/") + pmml_->xpathNsPrefix_ + String("NormContinuous/") + pmml_->xpathNsPrefix_ + String("LinearNorm/@orig")).c_str(), pmml_->xpathContext_);
+  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2 * nrOutputs)
   {
     for (int cnt = 0; cnt < xpathObj->nodesetval->nodeNr; ++cnt)
     {
@@ -324,8 +328,8 @@ Sample PMMLNeuralNetwork::getOutputsNormalization() const
   }
   xmlXPathFreeObject(xpathObj);
   setXPathContext();
-  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./")+pmml_->xpathNsPrefix_+String("NeuralOutputs/")+pmml_->xpathNsPrefix_+String("NeuralOutput/")+pmml_->xpathNsPrefix_+String("DerivedField/")+pmml_->xpathNsPrefix_+String("NormContinuous/")+pmml_->xpathNsPrefix_+String("LinearNorm/@norm")).c_str(), pmml_->xpathContext_);
-  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2*nrOutputs)
+  xpathObj = xmlXPathEvalExpression(BAD_CAST (String("./") + pmml_->xpathNsPrefix_ + String("NeuralOutputs/") + pmml_->xpathNsPrefix_ + String("NeuralOutput/") + pmml_->xpathNsPrefix_ + String("DerivedField/") + pmml_->xpathNsPrefix_ + String("NormContinuous/") + pmml_->xpathNsPrefix_ + String("LinearNorm/@norm")).c_str(), pmml_->xpathContext_);
+  if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval) && static_cast<UnsignedInteger>(xpathObj->nodesetval->nodeNr) == 2 * nrOutputs)
   {
     for (int cnt = 0; cnt < xpathObj->nodesetval->nodeNr; ++cnt)
     {
@@ -399,7 +403,9 @@ Function PMMLNeuralNetwork::getInputsNormalizationFunction() const
       Bool minus = (- input[d][1] * input[d][2] < 0.0);
       formulas[d] = (OSS().setPrecision(20) << (minus ? "- " : "" ) << "(" << inputVariablesNames[d] << (input[d][1] < 0.0 ? " + " : " - ") << std::abs(input[d][1]) << ") / " << std::abs(input[d][1] * input[d][2]));
     }
-  } else {
+  }
+  else
+  {
     // Case 2:
     //   orig0 = dmin;
     //   orig1 = dmax;
@@ -441,7 +447,9 @@ Function PMMLNeuralNetwork::getOutputsNormalizationFunction() const
       Bool minus = (- output[d][1] * output[d][2] < 0.0);
       formulas[d] = (OSS().setPrecision(20) << (minus ? "- " : "" ) << outputVariablesNames[d] << " * " << std::abs(output[d][2] * output[d][1]) << (output[d][1] < 0.0 ? " - " : " + ") << std::abs(output[d][1]));
     }
-  } else {
+  }
+  else
+  {
     // Case 2:
     //   orig0 = dmin;
     //   orig1 = dmax;
@@ -453,7 +461,7 @@ Function PMMLNeuralNetwork::getOutputsNormalizationFunction() const
     {
       outputVariablesNames[d] = (OSS() << "x" << d);
       Bool minus = (output[d][1] < output[d][0]);
-      formulas[d] =(OSS().setPrecision(20) << output[d][0] << (minus ? " - " : " + " ) << (0.5 * std::abs(output[d][1] - output[d][0])) << " * (" << outputVariablesNames[d] << " + 1.0)");
+      formulas[d] = (OSS().setPrecision(20) << output[d][0] << (minus ? " - " : " + " ) << (0.5 * std::abs(output[d][1] - output[d][0])) << " * (" << outputVariablesNames[d] << " + 1.0)");
     }
   }
   return SymbolicFunction(outputVariablesNames, formulas);
@@ -493,25 +501,25 @@ Function PMMLNeuralNetwork::getEvaluationFunctionAtLayer(UnsignedInteger layerIn
     }
     stream << (bias[i] < 0.0 ? "" : "+" ) << bias[i];
     if(activation == "tanh")
-      formulas[i] = String("tanh(")+String(stream)+String(")");
+      formulas[i] = String("tanh(") + String(stream) + String(")");
     else if(activation == "logistic")
-      formulas[i] = String("1/(1+exp(-(")+String(stream)+String(")))");
+      formulas[i] = String("1/(1+exp(-(") + String(stream) + String(")))");
     else if(activation == "exponential")
-      formulas[i] = String("exp(")+String(stream)+String(")");
+      formulas[i] = String("exp(") + String(stream) + String(")");
     else if(activation == "reciprocal")
-      formulas[i] = String("1/(")+String(stream)+String(")");
+      formulas[i] = String("1/(") + String(stream) + String(")");
     else if(activation == "square")
-      formulas[i] = String("(")+String(stream)+String(")*(")+String(stream)+String(")");
+      formulas[i] = String("(") + String(stream) + String(")*(") + String(stream) + String(")");
     else if(activation == "Gauss")
-      formulas[i] = String("exp(-(")+String(stream)+String(")*(")+String(stream)+String("))");
+      formulas[i] = String("exp(-(") + String(stream) + String(")*(") + String(stream) + String("))");
     else if(activation == "sine")
-      formulas[i] = String("sin(")+String(stream)+String(")");
+      formulas[i] = String("sin(") + String(stream) + String(")");
     else if(activation == "cosine")
-      formulas[i] = String("cos(")+String(stream)+String(")");
+      formulas[i] = String("cos(") + String(stream) + String(")");
     else if(activation == "Elliott")
-      formulas[i] = String("(")+String(stream)+String(")/(1+abs(")+String(stream)+String("))");
+      formulas[i] = String("(") + String(stream) + String(")/(1+abs(") + String(stream) + String("))");
     else if(activation == "arctan")
-      formulas[i] =String("0.5*atan(")+String(stream)+String(")/atan(1)");
+      formulas[i] = String("0.5*atan(") + String(stream) + String(")/atan(1)");
     else if(activation == "identity")
       formulas[i] = String(stream);
     else

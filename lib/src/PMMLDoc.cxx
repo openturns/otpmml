@@ -119,8 +119,8 @@ Bool PMMLDoc::read(const FileName & pmmlFile)
   document_ = xmlParseFile(pmmlFile.c_str());
   if (document_ == NULL)
   {
-      std::cerr << "Unable to parse XML file " << pmmlFile << std::endl;
-      return false;
+    std::cerr << "Unable to parse XML file " << pmmlFile << std::endl;
+    return false;
   }
   rootNode_ = xmlDocGetRootElement(document_);
 
@@ -143,7 +143,7 @@ Bool PMMLDoc::write(const FileName & pmmlFile) const
 UnsignedInteger PMMLDoc::getNumberOfNeuralNetworks() const
 {
   checkInitialized();
-  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("count(")+xpathNsPrefix_+String("PMML/")+xpathNsPrefix_+String("NeuralNetwork)")).c_str(), xpathContext_);
+  xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST (String("count(") + xpathNsPrefix_ + String("PMML/") + xpathNsPrefix_ + String("NeuralNetwork)")).c_str(), xpathContext_);
   const UnsignedInteger result = static_cast<UnsignedInteger>(xpathObj->floatval);
   xmlXPathFreeObject(xpathObj);
   return result;
@@ -184,7 +184,7 @@ PMMLNeuralNetwork PMMLDoc::getNeuralNetwork(const OT::String & modelName) const
 PMMLDoc::StringCollection PMMLDoc::getModelNames(const String & category) const
 {
   checkInitialized();
-  String query(String("/")+xpathNsPrefix_+String("PMML/")+xpathNsPrefix_+category);
+  String query(String("/") + xpathNsPrefix_ + String("PMML/") + xpathNsPrefix_ + category);
   xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(BAD_CAST query.c_str(), xpathContext_);
   StringCollection result;
   if(!xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
@@ -197,8 +197,8 @@ PMMLDoc::StringCollection PMMLDoc::getModelNames(const String & category) const
       {
         if (cur_attr->type == XML_ATTRIBUTE_NODE && 0 == xmlStrcmp(cur_attr->name, BAD_CAST "modelName"))
         {
-            name = reinterpret_cast<const char*>(cur_attr->children->content);
-            break;
+          name = reinterpret_cast<const char*>(cur_attr->children->content);
+          break;
         }
       }
       result.add(name);
@@ -288,7 +288,10 @@ void PMMLDoc::addHeader()
     if (0 == xmlStrcmp(cur_node->name, BAD_CAST "Header"))
       return;
     // Document is not empty, add header before the first element
-    while(cur_node->prev != NULL && cur_node->prev->type == XML_TEXT_NODE) { cur_node = cur_node->prev; }
+    while(cur_node->prev != NULL && cur_node->prev->type == XML_TEXT_NODE)
+    {
+      cur_node = cur_node->prev;
+    }
 
     headerNode = xmlNewNode(rootNode_->ns, BAD_CAST "Header");
     xmlAddPrevSibling(cur_node, headerNode);
@@ -349,12 +352,18 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
       if (NULL == anchor && 0 == xmlStrcmp(cur_node->name, BAD_CAST "Header"))
       {
         anchor = cur_node;
-        while(anchor->next != NULL && anchor->next->type == XML_TEXT_NODE) { anchor = anchor->next; }
+        while(anchor->next != NULL && anchor->next->type == XML_TEXT_NODE)
+        {
+          anchor = anchor->next;
+        }
       }
       else if (0 == xmlStrcmp(cur_node->name, BAD_CAST "MiningBuildTask"))
       {
         anchor = cur_node;
-        while(anchor->next != NULL && anchor->next->type == XML_TEXT_NODE) { anchor = anchor->next; }
+        while(anchor->next != NULL && anchor->next->type == XML_TEXT_NODE)
+        {
+          anchor = anchor->next;
+        }
         break;
       }
       else
@@ -363,7 +372,10 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
         {
           append = false;
           anchor = cur_node;
-          while(anchor->prev != NULL && anchor->prev->type == XML_TEXT_NODE) { anchor = anchor->prev; }
+          while(anchor->prev != NULL && anchor->prev->type == XML_TEXT_NODE)
+          {
+            anchor = anchor->prev;
+          }
         }
         break;
       }
@@ -400,10 +412,10 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
     {
       if (cur_attr->type == XML_ATTRIBUTE_NODE && 0 == xmlStrcmp(cur_attr->name, BAD_CAST "numberOfFields"))
       {
-          UnsignedInteger numberOfFields = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
-          numberOfFields += 1 + linear.getNbRows();
-          xmlSetProp(dictionnaryNode, BAD_CAST "numberOfFields", BAD_CAST String(OSS() << numberOfFields).c_str());
-          break;
+        UnsignedInteger numberOfFields = strtol(reinterpret_cast<const char*>(cur_attr->children->content), NULL, 10);
+        numberOfFields += 1 + linear.getNbRows();
+        xmlSetProp(dictionnaryNode, BAD_CAST "numberOfFields", BAD_CAST String(OSS() << numberOfFields).c_str());
+        break;
       }
     }
   }
@@ -443,7 +455,7 @@ void PMMLDoc::addRegressionModel(const String & modelName, LinearLeastSquares re
     xmlNodePtr newNumericPredictorNode = xmlNewChild(newRegressionTableNode, 0, BAD_CAST "NumericPredictor", 0);
     xmlNewProp(newNumericPredictorNode, BAD_CAST "name", BAD_CAST descriptionIn[i].c_str());
     xmlNewProp(newNumericPredictorNode, BAD_CAST "exponent", BAD_CAST "1");
-    xmlNewProp(newNumericPredictorNode, BAD_CAST "coefficient", BAD_CAST String(OSS().setPrecision(20) << linear(i,0)).c_str());
+    xmlNewProp(newNumericPredictorNode, BAD_CAST "coefficient", BAD_CAST String(OSS().setPrecision(20) << linear(i, 0)).c_str());
   }
   xmlNodeAddContent(newRegressionTableNode, BAD_CAST "\n    ");
   xmlNodeAddContent(newRegressionNode, BAD_CAST "\n  ");
