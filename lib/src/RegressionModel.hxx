@@ -3,7 +3,7 @@
  *  @file  RegressionModel.hxx
  *  @brief The class RegressionModel allows reading and writing LinearLeastSquares instances in a PMML file
  *
- *  Copyright (C) 2014 EDF
+ *  Copyright 2014-2018 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
