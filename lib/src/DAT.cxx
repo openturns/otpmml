@@ -78,7 +78,7 @@ DAT::SampleCollection DAT::Import(const FileName& datFile)
     while ((pos = line.find("|")) != std::string::npos)
     {
       String desc(line.substr(0, pos));
-      line = line.substr(pos+1);
+      line = line.substr(pos + 1);
       // Trim whitespace
       while (!desc.empty() && (desc[0] == ' ' || desc[0] == '\t'))
         desc = desc.substr(1);
