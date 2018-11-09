@@ -21,7 +21,7 @@
 %import uncertainty_module.i
 
 // The new classes
-%include OTPMMLprivate.hxx
+%include otpmml/OTPMMLprivate.hxx
 %include DAT.i
 %include RegressionModel.i
 %include NeuralNetwork.i

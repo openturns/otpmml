@@ -22,7 +22,7 @@
 #ifndef OTPMML_DAT_HXX
 #define OTPMML_DAT_HXX
 
-#include "OTPMMLprivate.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
 
 #include <openturns/Sample.hxx>
 

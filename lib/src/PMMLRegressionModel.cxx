@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-#include "PMMLRegressionModel.hxx"
-#include "PMMLDoc.hxx"
+#include "otpmml/PMMLRegressionModel.hxx"
+#include "otpmml/PMMLDoc.hxx"
 
 #include <openturns/Exception.hxx>
 

@@ -2,9 +2,9 @@
 // OT includes
 #include <openturns/OT.hxx>
 
-#include "PMMLDoc.hxx"
-#include "PMMLRegressionModel.hxx"
-#include "RegressionModel.hxx"
+#include "otpmml/PMMLDoc.hxx"
+#include "otpmml/PMMLRegressionModel.hxx"
+#include "otpmml/RegressionModel.hxx"
 
 using namespace OT;
 using namespace OTPMML;

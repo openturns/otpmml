@@ -1,10 +1,10 @@
-// SWIG file
+// SWIG file NeuralNetwork.i
 
 %{
-#include "NeuralNetwork.hxx"
+#include "otpmml/NeuralNetwork.hxx"
 %}
 
 %include NeuralNetwork_doc.i
 
-%include NeuralNetwork.hxx
+%include otpmml/NeuralNetwork.hxx
 namespace OTPMML { %extend NeuralNetwork { NeuralNetwork(const NeuralNetwork & other) { return new OTPMML::NeuralNetwork(other); } } }

@@ -24,7 +24,7 @@
 
 #include <openturns/Function.hxx>
 
-#include "OTPMMLprivate.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
 
 namespace OTPMML
 {
