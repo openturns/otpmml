@@ -2,10 +2,10 @@
 // OT includes
 #include <openturns/OT.hxx>
 
-#include "DAT.hxx"
-#include "PMMLDoc.hxx"
-#include "PMMLNeuralNetwork.hxx"
-#include "NeuralNetwork.hxx"
+#include "otpmml/DAT.hxx"
+#include "otpmml/PMMLDoc.hxx"
+#include "otpmml/PMMLNeuralNetwork.hxx"
+#include "otpmml/NeuralNetwork.hxx"
 
 using namespace OT;
 using namespace OTPMML;

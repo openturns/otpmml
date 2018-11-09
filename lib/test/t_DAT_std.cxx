@@ -4,7 +4,7 @@
 // OT includes
 #include <openturns/OT.hxx>
 
-#include "DAT.hxx"
+#include "otpmml/DAT.hxx"
 
 using namespace OT;
 using namespace OTPMML;

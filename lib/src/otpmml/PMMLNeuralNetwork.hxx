@@ -26,7 +26,7 @@
 #include <openturns/Matrix.hxx>
 #include <openturns/Function.hxx>
 
-#include "OTPMMLprivate.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
 
 #include <libxml/tree.h>
 

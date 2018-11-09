@@ -37,6 +37,6 @@ if ( PDFLATEX_COMPILER AND BIBTEX_COMPILER )
      COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/validation/compare_otpmml.py ${LATEX_OUTPUT_PATH}/compare_otpmml.py
      COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/validation/compare_otpmml.out ${LATEX_OUTPUT_PATH}/compare_otpmml.out
    )
-  install ( FILES ${LATEX_OUTPUT_PATH}/OTPMML_Documentation.pdf DESTINATION ${DOC_INSTALL_PATH}/pdf )
+  install ( FILES ${LATEX_OUTPUT_PATH}/OTPMML_Documentation.pdf DESTINATION ${OTPMML_DATA_PATH}/doc/otpmml/pdf )
 
 endif ()

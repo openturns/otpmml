@@ -2,7 +2,7 @@
 
 %{
 #include <openturns/PythonWrappingFunctions.hxx>
-#include "DAT.hxx"
+#include "otpmml/DAT.hxx"
 #include <openturns/PersistentCollection.hxx>
 #include <openturns/Sample.hxx>
 %}
@@ -12,7 +12,7 @@
 %template(SampleCollection) OT::Collection<OT::Sample>;
 %template(SamplePersistentCollection) OT::PersistentCollection<OT::Sample>;
 
-%include DAT.hxx
+%include otpmml/DAT.hxx
 
 %extend OT::Collection<OT::Sample>
 {

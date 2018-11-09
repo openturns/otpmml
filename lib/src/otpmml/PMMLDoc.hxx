@@ -23,9 +23,9 @@
 #ifndef OTPMML_PMMLDOC_HXX
 #define OTPMML_PMMLDOC_HXX
 
-#include "OTPMMLprivate.hxx"
-#include "PMMLNeuralNetwork.hxx"
-#include "PMMLRegressionModel.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
+#include "otpmml/PMMLNeuralNetwork.hxx"
+#include "otpmml/PMMLRegressionModel.hxx"
 
 #include <openturns/LinearLeastSquares.hxx>
 

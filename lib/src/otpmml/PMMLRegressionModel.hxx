@@ -25,7 +25,7 @@
 
 #include <openturns/Sample.hxx>
 
-#include "OTPMMLprivate.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
 
 #include <libxml/tree.h>
 

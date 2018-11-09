@@ -19,9 +19,10 @@ ot_install_header_file ( PMMLRegressionModel.hxx )
 
 include_directories ( ${INTERNAL_INCLUDE_DIRS} )
 
-add_library ( otpmml ${SOURCEFILES} )
-if ( BUILD_SHARED_LIBS )
-  set_target_properties ( otpmml PROPERTIES COMPILE_DEFINITIONS "OTPMML_DLL_EXPORTS" )
+add_library (otpmml ${SOURCEFILES})
+set_target_properties (otpmml PROPERTIES POSITION_INDEPENDENT_CODE ON)
+if (BUILD_SHARED_LIBS)
+  set_target_properties (otpmml PROPERTIES COMPILE_DEFINITIONS "OTPMML_DLL_EXPORTS")
 endif ()
 
 if ( NOT DEFINED LIB_VERSION ) 
@@ -32,11 +33,20 @@ if ( NOT DEFINED LIB_SOVERSION )
 endif ()
 set_target_properties ( otpmml PROPERTIES VERSION ${LIB_VERSION} )
 set_target_properties ( otpmml PROPERTIES SOVERSION ${LIB_SOVERSION} )
-target_link_libraries ( otpmml ${OPENTURNS_LIBRARIES} )
+target_link_libraries (otpmml ${OPENTURNS_LIBRARY})
 
-install ( TARGETS otpmml
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION ${OTPMML_LIBRARY_PATH}
-  ARCHIVE DESTINATION ${OTPMML_LIBRARY_PATH}
+# Add targets to the build-tree export set
+export (TARGETS otpmml FILE ${PROJECT_BINARY_DIR}/OTTemplate-Targets.cmake)
+
+# Install the export set for use with the install-tree
+install(EXPORT OTTemplate-Targets
+        DESTINATION "${OTPMML_CONFIG_CMAKE_PATH}"
+        COMPONENT Development)
+
+install(TARGETS otpmml
+        EXPORT  OTTemplate-Targets 
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${OTPMML_LIBRARY_PATH}
+        ARCHIVE DESTINATION ${OTPMML_LIBRARY_PATH}
 )
 

@@ -1,9 +1,7 @@
-cmake_minimum_required ( VERSION 2.8 )
+cmake_minimum_required (VERSION 2.8.8)
 
 option ( BUILD_PYTHON                 "Build the python module for the library"                               ON )
 option ( BUILD_DOC                    "Build the documentation"                                               ON )
-option ( LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON )
-option ( INSTALL_TESTS                "Install compiled tests for native platform testing"                    OFF )
 option ( BUILD_SHARED_LIBS            "Build shared libraries"                                                ON )
 
 # By default, build in Release mode. Must appear before project() command
@@ -11,7 +9,7 @@ if ( NOT DEFINED CMAKE_BUILD_TYPE )
    set( CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 endif ()
 
-project ( OTPMML CXX )
+project (OTPMML)
 
 string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 
@@ -19,9 +17,7 @@ string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 list ( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
 find_package (OpenTURNS NO_MODULE REQUIRED)
-if (OPENTURNS_FOUND)
-  message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR}")
-endif ()
+message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR} (found version \"${OPENTURNS_VERSION_STRING}\")")
 include ( ${OPENTURNS_USE_FILE} )
 set ( OTPMML_DEFINITIONS ${OPENTURNS_DEFINITIONS} )
 if (NOT BUILD_SHARED_LIBS)
@@ -30,17 +26,21 @@ endif ()
 add_definitions ( ${OTPMML_DEFINITIONS} )
 
 set ( OTPMML_LIBRARY_PATH lib${LIB_SUFFIX} )
-set ( OTPMML_INCLUDE_PATH include/${PACKAGE_NAME} )
-set ( OTPMML_SWIG_INCLUDE_PATH ${OTPMML_INCLUDE_PATH}/swig )
+set ( OTPMML_INCLUDE_PATH include)
+set ( OTPMML_SWIG_INCLUDE_DIRS ${OTPMML_INCLUDE_PATH}/${PACKAGE_NAME}/swig )
 set ( OTPMML_DATA_PATH share )
 set ( OTPMML_EXAMPLE_PATH ${OTPMML_DATA_PATH}/${PACKAGE_NAME}/examples )
 set ( OTPMML_CONFIG_CMAKE_PATH lib${LIB_SUFFIX}/cmake/otpmml )
-set ( DOC_INSTALL_PATH share/doc/${PACKAGE_NAME} )
+set (OTPMML_DOC_PATH share/${PACKAGE_NAME}/doc)
 
-if ( BUILD_PYTHON )
+if (BUILD_PYTHON)
   # workaround for cmake bug #0013449
-  if ( NOT DEFINED CMAKE_FIND_ROOT_PATH )
-    find_package ( SWIG )
+  if (CMAKE_VERSION VERSION_LESS 3 AND DEFINED CMAKE_FIND_ROOT_PATH)
+    find_program (SWIG_EXECUTABLE NAMES swig2.0 swig)
+    if (SWIG_EXECUTABLE)
+      set (SWIG_USE_FILE ${CMAKE_ROOT}/Modules/UseSWIG.cmake)
+      set (SWIG_FOUND TRUE)
+    endif ()
   else ()
     find_program ( SWIG_EXECUTABLE NAMES swig2.0 swig )
     if ( SWIG_EXECUTABLE )
@@ -48,50 +48,61 @@ if ( BUILD_PYTHON )
       set ( SWIG_FOUND TRUE )
     endif ()
   endif ()
-  find_package ( PythonInterp )
-  find_package ( PythonLibs )
 
-  if ( PYTHONINTERP_FOUND )
-    execute_process ( COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
-                      OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
-                      RESULT_VARIABLE _PYTHON_pythonlib_result 
-                      OUTPUT_STRIP_TRAILING_WHITESPACE )
+  find_package (PythonInterp)
+  find_package (PythonLibs)
 
-    if (NOT _PYTHON_pythonlib_result) 
-      get_filename_component ( _ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE )
-      file ( RELATIVE_PATH _REL_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH} )                   
-
-      set (OTPMML_PYTHON_MODULE_PATH ${_REL_PYTHON_MODULE_PATH})
+  if (PYTHONINTERP_FOUND)
+    if (DEFINED PYTHON_SITE_PACKAGES)
+      set (OTPMML_PYTHON_MODULE_PATH ${PYTHON_SITE_PACKAGES})
 
     else ()
-      message ( SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}" ) 
+      execute_process ( COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
+                        OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
+                        RESULT_VARIABLE _PYTHON_pythonlib_result
+                        OUTPUT_STRIP_TRAILING_WHITESPACE )
+
+      if (_PYTHON_pythonlib_result)
+        message (SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}")
+      endif ()
+
+      get_filename_component (_ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE)
+      file (RELATIVE_PATH OTPMML_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
     endif ()
 
-    if (CMAKE_VERSION VERSION_LESS "2.8.6")
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.version_info[0])"
-                       OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
-                       OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if (IS_ABSOLUTE ${OTPMML_PYTHON_MODULE_PATH})
+      set (PYTHON_MODULE_PATH ${OTPMML_PYTHON_MODULE_PATH})
+    else ()
+      set (PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/${OTPMML_PYTHON_MODULE_PATH})
     endif ()
+
     set (OTPMML_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OTPMML_PYTHON_MODULE_PATH})
   endif ( PYTHONINTERP_FOUND )
 endif ()
 
 
-# WARNING: This is where variables without OTPMML_ prefix are defined !
+# Define variables without OTPMML_ prefix with absolute paths
 foreach (_var PYTHON_MODULE_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH)
-  file (TO_NATIVE_PATH "${OTPMML_${_var}}" NATIVE_OTPMML_${_var})
-  if (NOT IS_ABSOLUTE ${NATIVE_OTPMML_${_var}})
-    file (TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OTPMML_${_var}} NATIVE_OTPMML_${_var})
+  if (IS_ABSOLUTE "${OTPMML_${_var}}")
+    set (${_var} ${OTPMML_${_var}})
+  else ()
+    set (${_var} ${CMAKE_INSTALL_PREFIX}/${OTPMML_${_var}})
   endif ()
-  string (REPLACE "\\" "\\\\" ${_var} ${NATIVE_OTPMML_${_var}})
+  get_filename_component (${_var} "${${_var}}" ABSOLUTE)
+  file (TO_NATIVE_PATH "${${_var}}" NATIVE_${_var})
+  string (REPLACE "\\" "\\\\" NATIVE_${_var} ${NATIVE_${_var}})
 endforeach ()
 
 # RPATH settings
-set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH} ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
+set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 if(POLICY CMP0042)
   # Set MACOSX_RPATH to ON
   cmake_policy(SET CMP0042 NEW)
+endif()
+if(POLICY CMP0078)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0078 NEW)
 endif()
 
 # Some useful macros to ease CMakeLists.txt file writing
@@ -103,7 +114,7 @@ endmacro ( ot_add_source_file )
 
 set ( HEADERFILES "" CACHE INTERNAL "List of header files to install" )
 macro ( ot_install_header_file FILENAME )
-  set ( hf ${HEADERFILES} ${CMAKE_CURRENT_SOURCE_DIR}/${FILENAME} )
+  set ( hf ${HEADERFILES} ${CMAKE_CURRENT_SOURCE_DIR}/${PACKAGE_NAME}/${FILENAME} )
   set ( HEADERFILES ${hf} CACHE INTERNAL "List of header files to install" )
 endmacro ( ot_install_header_file )
 
@@ -120,29 +131,15 @@ macro ( ot_add_current_dir_to_include_dirs )
 endmacro ( ot_add_current_dir_to_include_dirs )
 
 
-# The tests can't be run if this function is absent
-enable_testing ()
-add_custom_target ( tests COMMENT "Build tests" )
-add_custom_target ( check COMMENT "Run pre-installation tests" )
-add_custom_target ( installcheck COMMENT "Run post-installation tests" )
-
-add_subdirectory ( lib )
-add_dependencies ( check cppcheck )
-
-if ( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND AND BUILD_SHARED_LIBS )
-  add_subdirectory ( python )
-  add_dependencies ( installcheck pyinstallcheck )
-endif ()
-
 set ( CPACK_PACKAGE_NAME          ${PACKAGE_NAME} )
-set ( CPACK_PACKAGE_VERSION_MAJOR 1              )
-set ( CPACK_PACKAGE_VERSION_MINOR 5              )
+set ( CPACK_PACKAGE_VERSION_MAJOR 0              )
+set ( CPACK_PACKAGE_VERSION_MINOR 0              )
 set ( CPACK_PACKAGE_VERSION_PATCH                )
 set ( CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"     )
-set ( CPACK_BINARY_STGZ           "OFF"          )
-set ( CPACK_BINARY_TBZ2           "ON"           )
-set ( CPACK_BINARY_TGZ            "ON"           )
-set ( CPACK_BINARY_TZ             "OFF"          )
+set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
+set (CPACK_BINARY_TBZ2    ON  CACHE BOOL "TBZ2")
+set (CPACK_BINARY_TGZ     ON  CACHE BOOL "TGZ" )
+set (CPACK_BINARY_TZ      OFF CACHE BOOL "TZ"  )
 set ( CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}" )
 set ( PACKAGE_NAME           ${CPACK_PACKAGE_NAME} )
 set ( PACKAGE_VERSION        ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR} )
@@ -150,6 +147,25 @@ if ( CPACK_PACKAGE_VERSION_PATCH )
   set ( PACKAGE_VERSION       ${PACKAGE_VERSION}.${CPACK_PACKAGE_VERSION_PATCH} )
 endif ()
 set ( CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION} )
+
+
+# The tests can't be run if this function is absent
+enable_testing ()
+add_custom_target (tests COMMENT "Build tests")
+add_custom_target (check COMMENT "Run pre-installation tests")
+add_custom_target (installcheck COMMENT "Run post-installation tests")
+
+add_subdirectory (lib)
+add_dependencies (check cppcheck)
+
+if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND)
+  add_subdirectory (python)
+  add_dependencies (installcheck pyinstallcheck)
+endif ()
+
+if (BUILD_DOC)
+  add_subdirectory (doc)
+endif ()
 
 # uninstall target
 configure_file (
@@ -162,16 +178,12 @@ add_custom_target ( uninstall
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
-if ( BUILD_DOC )
-  add_subdirectory ( doc )
-endif ()
-
 set ( OTPMML_LIBRARY                 otpmml )
 set ( OTPMML_LIBRARIES ${OPENTURNS_LIBRARIES} )
 list ( APPEND OTPMML_LIBRARIES ${OTPMML_LIBRARY} )
 set ( OTPMML_LIBRARY_DIRS ${OPENTURNS_LIBRARY_DIRS} )
 list ( APPEND OTPMML_LIBRARY_DIRS ${LIBRARY_PATH} )
-set ( OTPMML_INCLUDE_DIR ${OTPMML_INCLUDE_PATH} )
+set ( OTPMML_INCLUDE_DIR ${INCLUDE_PATH} )
 set ( OTPMML_INCLUDE_DIRS ${OTPMML_INCLUDE_DIR} )
 set ( OTPMML_ROOT_DIR       ${CMAKE_INSTALL_PREFIX} )
 list ( APPEND OTPMML_INCLUDE_DIRS ${OPENTURNS_INCLUDE_DIRS} )
@@ -179,57 +191,26 @@ set ( OTPMML_VERSION_STRING ${PACKAGE_VERSION} )
 set ( OTPMML_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR} )
 set ( OTPMML_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR} )
 set ( OTPMML_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH} )
-set ( OTPMML_USE_FILE      ${OTPMML_CONFIG_CMAKE_PATH}/UseOTPMML.cmake )
+set ( OTPMML_USE_FILE      ${CONFIG_CMAKE_PATH}/UseOTPMML.cmake )
 
-if(CMAKE_VERSION VERSION_LESS 2.8.8)
-  # CMakePackageConfigHelpers is not available
-  set (PACKAGE_INIT "
-# Generated by a CMake version without CMakePackageConfigHelpers.
-macro(set_and_check _var _value)
-  set(\${_var} \"\${_value}\")
-endmacro(set_and_check _var _value)
-"     )
-  foreach (_var
-      OTPMML_USE_FILE
-      OTPMML_ROOT_DIR
-      OTPMML_INCLUDE_DIR
-      OTPMML_INCLUDE_DIRS
-      OTPMML_LIBRARY_DIRS )
-    set(PACKAGE_${_var} ${${_var}})
-  endforeach ()
-  
-configure_file ( ${CMAKE_SOURCE_DIR}/cmake/OTPMMLConfig.cmake.in
-                 ${CMAKE_BINARY_DIR}/OTPMMLConfig.cmake
-                 @ONLY ESCAPE_QUOTES
-               )
+include(CMakePackageConfigHelpers)
+configure_package_config_file (cmake/OTPMMLConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfig.cmake
+  INSTALL_DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
+  PATH_VARS
+    OTPMML_USE_FILE
+    OTPMML_ROOT_DIR
+    OTPMML_INCLUDE_DIR
+    OTPMML_INCLUDE_DIRS
+    OTPMML_LIBRARY_DIRS
+    PYTHON_MODULE_PATH
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
-install ( FILES cmake/UseOTPMML.cmake 
-                ${CMAKE_BINARY_DIR}/OTPMMLConfig.cmake
-          DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
-        )
+write_basic_package_version_file (OTPMMLConfigVersion.cmake VERSION ${OTPMML_VERSION_STRING} COMPATIBILITY AnyNewerVersion)
 
-else ()
-
-  include(CMakePackageConfigHelpers)
-  configure_package_config_file (
-    cmake/OTPMMLConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfig.cmake
-    INSTALL_DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
-    PATH_VARS
-      OTPMML_USE_FILE
-      OTPMML_ROOT_DIR
-      OTPMML_INCLUDE_DIR
-      OTPMML_INCLUDE_DIRS
-      OTPMML_LIBRARY_DIRS
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                                )                   
-  write_basic_package_version_file( OTPMMLConfigVersion.cmake VERSION ${OTPMML_VERSION_STRING} COMPATIBILITY AnyNewerVersion )               
-
-  install ( FILES cmake/UseOTPMML.cmake
-                  ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfig.cmake
-                  ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfigVersion.cmake
-            DESTINATION ${OTPMML_CONFIG_CMAKE_PATH}
-          )
-endif ()
+install (FILES cmake/UseOTPMML.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfig.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/OTPMMLConfigVersion.cmake
+         DESTINATION ${OTPMML_CONFIG_CMAKE_PATH})
 
 include (CPack)

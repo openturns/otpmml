@@ -25,7 +25,7 @@
 
 #include <openturns/LinearLeastSquares.hxx>
 
-#include "OTPMMLprivate.hxx"
+#include "otpmml/OTPMMLprivate.hxx"
 
 namespace OTPMML
 {
