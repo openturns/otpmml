@@ -15,4 +15,4 @@ if sys.platform.startswith('win'):
 
 from .otpmml import *
 
-__version__ = '1.8'
+__version__ = '1.9'
