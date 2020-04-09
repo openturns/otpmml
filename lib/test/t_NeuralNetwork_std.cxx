@@ -10,7 +10,7 @@
 using namespace OT;
 using namespace OTPMML;
 
-int main(int argc, char **argv)
+int main()
 {
   Point reseau(4);
   reseau[0] = 3.048020426e+00;

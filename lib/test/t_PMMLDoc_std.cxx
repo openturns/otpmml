@@ -8,7 +8,7 @@
 using namespace OT;
 using namespace OTPMML;
 
-int main(int argc, char **argv)
+int main()
 {
   PMMLDoc doc("uranie_ann_poutre.pmml");
   doc.write("out.pmml");
