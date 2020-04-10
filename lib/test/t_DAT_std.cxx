@@ -9,7 +9,7 @@
 using namespace OT;
 using namespace OTPMML;
 
-int main(int argc, char **argv)
+int main()
 {
   Description variables(4);
   Description formula(1);

@@ -9,7 +9,7 @@
 using namespace OT;
 using namespace OTPMML;
 
-int main(int argc, char **argv)
+int main()
 {
   PMMLDoc doc("linear_regression.pmml");
   std::cout << "Number of regression models = " << doc.getNumberOfRegressionModels() << std::endl;
