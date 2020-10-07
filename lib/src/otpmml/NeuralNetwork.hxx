@@ -46,10 +46,10 @@ public:
   NeuralNetwork(const OT::FileName & pmmlFile, const OT::String& modelName = "");
 
   /** String converter */
-  virtual OT::String __repr__() const;
+  OT::String __repr__() const override;
 
   /** String converter */
-  virtual OT::String __str__(const OT::String & offset = "") const;
+  OT::String __str__(const OT::String & offset = "") const override;
 
 }; /* class PMMLNeuralNetwork */
 

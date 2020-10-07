@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 3.2)
 
 option ( BUILD_PYTHON                 "Build the python module for the library"                               ON )
 option ( BUILD_DOC                    "Build the documentation"                                               ON )
@@ -16,11 +16,8 @@ string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 # set module dir to find custom scripts
 list ( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
-find_package (OpenTURNS NO_MODULE REQUIRED)
+find_package (OpenTURNS CONFIG REQUIRED)
 message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR} (found version \"${OPENTURNS_VERSION_STRING}\")")
-if (CMAKE_VERSION VERSION_LESS 3)
-  include (${OPENTURNS_USE_FILE})
-endif ()
 
 if (NOT BUILD_SHARED_LIBS)
   list ( APPEND OTPMML_DEFINITIONS "-DOTPMML_STATIC" )
@@ -35,24 +32,10 @@ set ( OTPMML_EXAMPLE_PATH ${OTPMML_DATA_PATH}/${PACKAGE_NAME}/examples )
 set ( OTPMML_CONFIG_CMAKE_PATH lib${LIB_SUFFIX}/cmake/otpmml )
 set (OTPMML_DOC_PATH share/${PACKAGE_NAME}/doc)
 
-if (NOT CMAKE_VERSION VERSION_LESS 3.1)
-  # beware swig<3.0 does not like c++11: https://github.com/swig/swig/issues/73
-  set (CMAKE_CXX_STANDARD 11)
-endif ()
+set (CMAKE_CXX_STANDARD 11)
 
 if (BUILD_PYTHON)
-  # workaround for cmake bug #0013449
-  if (CMAKE_VERSION VERSION_LESS 3 AND DEFINED CMAKE_FIND_ROOT_PATH)
-    find_program (SWIG_EXECUTABLE NAMES swig2.0 swig)
-    if (SWIG_EXECUTABLE)
-      set (SWIG_USE_FILE ${CMAKE_ROOT}/Modules/UseSWIG.cmake)
-      set (SWIG_FOUND TRUE)
-      set (SWIG_VERSION 2)
-    endif ()
-  else ()
-    # we need absolute module imports
-    find_package (SWIG 2.0.9)
-  endif ()
+  find_package (SWIG 3)
 
   find_package (PythonInterp)
   find_package (PythonLibs ${PYTHON_VERSION_STRING} EXACT)
