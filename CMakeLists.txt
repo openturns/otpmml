@@ -19,16 +19,23 @@ list ( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 find_package (OpenTURNS CONFIG REQUIRED)
 message (STATUS "Found OpenTURNS: ${OPENTURNS_ROOT_DIR} (found version \"${OPENTURNS_VERSION_STRING}\")")
 
+find_package (LibXml2 REQUIRED)
+
 if (NOT BUILD_SHARED_LIBS)
   list ( APPEND OTPMML_DEFINITIONS "-DOTPMML_STATIC" )
 endif ()
 add_definitions ( ${OTPMML_DEFINITIONS} )
 
-set ( OTPMML_LIBRARY_PATH lib${LIB_SUFFIX} )
-set ( OTPMML_INCLUDE_PATH include)
-set ( OTPMML_SWIG_INCLUDE_DIRS ${OTPMML_INCLUDE_PATH}/${PACKAGE_NAME}/swig )
-set ( OTPMML_DATA_PATH share )
-set ( OTPMML_CONFIG_CMAKE_PATH lib${LIB_SUFFIX}/cmake/otpmml )
+
+if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
+  set (CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
+endif ()
+
+set (OTPMML_LIBRARY_PATH ${CMAKE_INSTALL_LIBDIR})
+set (OTPMML_INCLUDE_PATH include)
+set (OTPMML_SWIG_INCLUDE_DIRS ${OTPMML_INCLUDE_PATH}/${PACKAGE_NAME}/swig)
+set (OTPMML_DATA_PATH share)
+set (OTPMML_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/otpmml)
 set (OTPMML_DOC_PATH share/${PACKAGE_NAME}/doc)
 
 set (CMAKE_CXX_STANDARD 11)
@@ -41,26 +48,13 @@ if (BUILD_PYTHON)
 
   if (PYTHONINTERP_FOUND)
     if (DEFINED PYTHON_SITE_PACKAGES)
-      set (OTPMML_PYTHON_MODULE_PATH ${PYTHON_SITE_PACKAGES})
-
+      set (OTPMML_PYTHON_MODULE_PATH "${PYTHON_SITE_PACKAGES}")
     else ()
-      execute_process ( COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
-                        OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
-                        RESULT_VARIABLE _PYTHON_pythonlib_result
-                        OUTPUT_STRIP_TRAILING_WHITESPACE )
-
-      if (_PYTHON_pythonlib_result)
-        message (SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}")
+     if (WIN32)
+       set (OTPMML_PYTHON_MODULE_PATH Lib/site-packages)
+     else ()
+       set (OTPMML_PYTHON_MODULE_PATH ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
       endif ()
-
-      get_filename_component (_ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE)
-      file (RELATIVE_PATH OTPMML_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
-    endif ()
-
-    if (IS_ABSOLUTE ${OTPMML_PYTHON_MODULE_PATH})
-      set (PYTHON_MODULE_PATH ${OTPMML_PYTHON_MODULE_PATH})
-    else ()
-      set (PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/${OTPMML_PYTHON_MODULE_PATH})
     endif ()
 
     set (OTPMML_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OTPMML_PYTHON_MODULE_PATH})

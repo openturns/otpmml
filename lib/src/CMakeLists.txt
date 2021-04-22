@@ -33,7 +33,10 @@ if ( NOT DEFINED LIB_SOVERSION )
 endif ()
 set_target_properties ( otpmml PROPERTIES VERSION ${LIB_VERSION} )
 set_target_properties ( otpmml PROPERTIES SOVERSION ${LIB_SOVERSION} )
-target_link_libraries (otpmml ${OPENTURNS_LIBRARY})
+target_link_libraries (otpmml PUBLIC ${OPENTURNS_LIBRARY})
+
+target_include_directories (otpmml PUBLIC ${LIBXML2_INCLUDE_DIR})
+target_link_libraries (otpmml PUBLIC ${LIBXML2_LIBRARIES})
 
 # Add targets to the build-tree export set
 export (TARGETS otpmml FILE ${PROJECT_BINARY_DIR}/OTTemplate-Targets.cmake)
