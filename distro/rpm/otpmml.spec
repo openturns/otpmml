@@ -30,6 +30,7 @@ Source0:        http://downloads.sourceforge.net/openturns-modules/otpmml/otpmml
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, swig
 BuildRequires:  openturns-devel
+BuildRequires:  libxml2-devel
 BuildRequires:  python3-openturns
 BuildRequires:  python3-devel
 Requires:       libotpmml0
