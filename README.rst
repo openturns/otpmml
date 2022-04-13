@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/openturns/otpmml.svg?branch=master
-    :target: https://travis-ci.org/openturns/otpmml
+.. image:: https://github.com/openturns/otpmml/actions/workflows/build.yml/badge.svg?branch=master
+    :target: https://github.com/openturns/otpmml/actions/workflows/build.yml
 
 OTPMML Module
 =============
